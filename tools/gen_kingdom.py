@@ -112,15 +112,29 @@ def shade_bottom(img, strength=0.35):
     a[:, :, :3] *= (1 - strength * t ** 2)
     return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8), "RGBA")
 
+def grade(img, desat=0.22, mul=0.9):
+    a = np.array(img).astype(np.float32)
+    rgb = a[:, :, :3]
+    lum = rgb.mean(2, keepdims=True)
+    rgb = rgb * (1 - desat) + lum * desat
+    shadow = np.clip(1 - lum / 140.0, 0, 1)
+    rgb = rgb * mul + shadow * np.array([2, 0, 10], np.float32)
+    a[:, :, :3] = rgb
+    return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8), "RGBA")
+
+
 def save(img, name, outline_px=2, downsample=True):
-    if outline_px: img = outline(img, outline_px)
+    img = grade(img)
+    if outline_px: img = outline(img, outline_px, (14, 10, 12, 255))
     if downsample and SS > 1:
         img = img.resize((img.width // SS, img.height // SS), Image.LANCZOS)
     img.save(os.path.join(OUT, name + ".png"), optimize=True)
     print("ok", name, img.size)
     return img
 
-def save_raw(img, name):
+def save_raw(img, name, do_grade=True):
+    if do_grade:
+        img = grade(img.convert("RGBA"))
     img.save(os.path.join(OUT, name + ".png"), optimize=True)
     print("ok", name, img.size)
 
@@ -130,17 +144,18 @@ def colorize(n, c_dark, c_light):
     return a
 
 # ---------------------------------------------------------------- palette
-WOOD = (128, 84, 48); WOOD_L = (168, 118, 70); WOOD_D = (78, 50, 30)
-PLASTER = (228, 214, 180); PLASTER_D = (190, 172, 135)
-THATCH = (205, 165, 85); THATCH_D = (140, 102, 48)
-STONE = (148, 142, 132); STONE_D = (92, 90, 88); STONE_L = (182, 176, 165)
-SLATE = (78, 86, 104); SLATE_D = (52, 58, 74)
-RED = (165, 32, 38); RED_D = (110, 20, 26)
-BLUE = (40, 70, 140); BLUE_D = (25, 42, 90)
-GOLD = (222, 176, 64); GOLD_D = (160, 115, 35)
-GRASS = (96, 150, 62); GRASS_D = (58, 102, 40); GRASS_L = (140, 186, 84)
-DIRT = (116, 84, 56); DIRT_D = (78, 56, 38)
-IRON = (96, 98, 104); IRON_D = (58, 60, 66)
+# tema sombrio: cores dessaturadas e escuras
+WOOD = (88, 60, 40); WOOD_L = (120, 86, 56); WOOD_D = (48, 32, 22)
+PLASTER = (146, 136, 118); PLASTER_D = (100, 92, 80)
+THATCH = (130, 102, 58); THATCH_D = (80, 58, 32)
+STONE = (100, 97, 96); STONE_D = (54, 52, 56); STONE_L = (134, 130, 127)
+SLATE = (50, 54, 66); SLATE_D = (28, 30, 40)
+RED = (118, 18, 26); RED_D = (66, 10, 15)
+BLUE = (32, 40, 78); BLUE_D = (16, 20, 44)
+GOLD = (186, 140, 52); GOLD_D = (116, 82, 28)
+GRASS = (56, 74, 42); GRASS_D = (30, 44, 26); GRASS_L = (84, 104, 56)
+DIRT = (66, 50, 38); DIRT_D = (36, 27, 22)
+IRON = (84, 86, 92); IRON_D = (46, 48, 54)
 
 # ================================================================ TILES
 
@@ -410,14 +425,14 @@ def tree():
     for cy, cx, s in blobs:
         t = (cy - 40) / 160
         ellipse(img, cx - s, cy - s * 0.85, cx + s, cy + s * 0.85,
-                lerpc(GRASS_L, GRASS, min(1, max(0, t))), lerpc(GRASS, (40, 78, 34), min(1, max(0, t))), True, 0.35)
+                lerpc(GRASS_L, GRASS, min(1, max(0, t))), lerpc(GRASS, (22, 36, 22), min(1, max(0, t))), True, 0.35)
     # folhagem detalhe
     d = ImageDraw.Draw(img)
     a = np.array(img.split()[3])
     for i in range(500):
         x = r.uniform(30, 250); y = r.uniform(20, 220)
         if a[int(y * SS), int(x * SS)] > 0 and r.random() < 0.8:
-            c = lerpc((60, 105, 45), (170, 205, 110), (220 - y) / 220 * r.random())
+            c = lerpc((30, 46, 28), (96, 118, 64), (220 - y) / 220 * r.random())
             d.ellipse(S([x - 3, y - 2, x + 3, y + 2]), fill=c + (255,))
     save(img, "tree_oak")
 
@@ -426,7 +441,7 @@ def pine():
     img = canvas(W, H)
     rect(img, 72, 250, 88, 320, WOOD, WOOD_D)
     for i, (y, w) in enumerate([(20, 30), (70, 50), (120, 65), (170, 78), (215, 80)]):
-        poly(img, [(80, y - 25), (80 + w, y + 55), (80 - w, y + 55)], (70, 120, 75), (32, 70, 46), True, 0.3)
+        poly(img, [(80, y - 25), (80 + w, y + 55), (80 - w, y + 55)], (40, 66, 48), (18, 34, 26), True, 0.3)
     save(img, "tree_pine")
 
 def bush():
@@ -839,7 +854,7 @@ def water_tile():
 def parchment():
     W, H = 192, 192
     n = tnoise(W, H, 6, 6, 5, 41)
-    arr = colorize(n, (200, 170, 120), (244, 226, 186))
+    arr = colorize(n, (24, 18, 18), (58, 44, 38))
     img = Image.fromarray(np.concatenate([arr, np.full((H, W, 1), 255)], 2).astype(np.uint8), "RGBA")
     a = np.array(img).astype(np.float32)
     yy, xx = np.mgrid[0:H, 0:W]
@@ -847,11 +862,11 @@ def parchment():
     a[:, :, :3] *= np.clip(0.55 + edge[:, :, None] * 0.45, 0, 1)
     img = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
     d = ImageDraw.Draw(img)
-    d.rectangle([0, 0, W - 1, H - 1], outline=(90, 55, 25, 255), width=4)
-    d.rectangle([8, 8, W - 9, H - 9], outline=(150, 105, 50, 255), width=2)
+    d.rectangle([0, 0, W - 1, H - 1], outline=(10, 6, 6, 255), width=4)
+    d.rectangle([8, 8, W - 9, H - 9], outline=(150, 110, 45, 255), width=2)
     for x, y in [(8, 8), (W - 9, 8), (8, H - 9), (W - 9, H - 9)]:
         d.ellipse([x - 6, y - 6, x + 6, y + 6], fill=GOLD + (255,), outline=(90, 55, 25, 255), width=2)
-    save_raw(img, "ui_parchment")
+    save_raw(img, "ui_parchment", False)
 
 def wood_button(name, light, dark):
     W, H = 96, 48
@@ -866,7 +881,7 @@ def wood_button(name, light, dark):
     d.rounded_rectangle([5, 5, W - 6, H - 6], 7, outline=GOLD_D + (255,), width=2)
     for x, y in [(10, 10), (W - 11, 10), (10, H - 11), (W - 11, H - 11)]:
         d.ellipse([x - 3, y - 3, x + 3, y + 3], fill=IRON + (255,))
-    save_raw(img, name)
+    save_raw(img, name, False)
 
 def crest():
     W, H = 220, 260
@@ -889,9 +904,13 @@ def crest():
 
 # ================================================================ BACKGROUNDS
 
-def sky(name, top, bottom, sun=None, stars=False, clouds=0, cloud_col=(255, 255, 255)):
+def sky(name, top, bottom, sun=None, stars=False, clouds=0, cloud_col=(255, 255, 255), horizon=None):
     W, H = 1280, 720
     img = grad_layer((W, H), top, bottom)
+    if horizon:
+        ramp = (np.clip((np.arange(H) - H * 0.45) / (H * 0.55), 0, 1) ** 1.6 * 255).astype(np.uint8)
+        m = Image.fromarray(np.repeat(ramp[:, None], W, 1), "L")
+        img.paste(Image.new("RGBA", (W, H), horizon + (255,)), (0, 0), m)
     d = ImageDraw.Draw(img)
     r = random.Random(hash(name) & 0xffff)
     if stars:
@@ -919,8 +938,9 @@ def sky(name, top, bottom, sun=None, stars=False, clouds=0, cloud_col=(255, 255,
                 ox = r.uniform(-s * 1.4, s * 1.4); oy = r.uniform(-s * 0.3, s * 0.2)
                 rr = r.uniform(s * 0.4, s * 0.8)
                 for xx in (cx + ox, cx + ox - W, cx + ox + W):
-                    cd.ellipse([xx - rr, cy + oy - rr * 0.6, xx + rr, cy + oy + rr * 0.6], fill=cloud_col + (150,))
-        cl = cl.filter(ImageFilter.GaussianBlur(6))
+                    cd.ellipse([xx - rr, cy + oy - rr * 0.6, xx + rr, cy + oy + rr * 0.6], fill=cloud_col + (190,))
+                    cd.ellipse([xx - rr * 0.8, cy + oy - rr * 0.1, xx + rr * 0.8, cy + oy + rr * 0.55], fill=lerpc(cloud_col, (255, 90, 50), 0.12) + (90,))
+        cl = cl.filter(ImageFilter.GaussianBlur(9))
         img.alpha_composite(cl)
     img.convert("RGB").save(os.path.join(OUT, name + ".png"), optimize=True)
     print("ok", name)
@@ -1036,15 +1056,15 @@ def castle_wall_layer(name, col, col_d, lit_col, base_y=330, seed=3):
 
 def dungeon_bg(name):
     W, H = 1280, 720
-    img = tile_like_bricks(W, H, (38, 34, 46), (70, 64, 80), 80, 40, 77)
+    img = tile_like_bricks(W, H, (20, 18, 26), (42, 38, 50), 80, 40, 77)
     d = ImageDraw.Draw(img)
     # arcos com janelas de luar
     for ax in range(160, W, 320):
         d.rectangle([ax - 60, 160, ax + 60, 460], fill=(14, 12, 20))
         d.ellipse([ax - 60, 100, ax + 60, 220], fill=(14, 12, 20))
         win = Image.new("RGBA", (W, H)); wd = ImageDraw.Draw(win)
-        wd.rectangle([ax - 26, 190, ax + 26, 330], fill=(110, 140, 200, 255))
-        wd.ellipse([ax - 26, 164, ax + 26, 216], fill=(110, 140, 200, 255))
+        wd.rectangle([ax - 26, 190, ax + 26, 330], fill=(60, 80, 130, 255))
+        wd.ellipse([ax - 26, 164, ax + 26, 216], fill=(60, 80, 130, 255))
         img.alpha_composite(win)
         d = ImageDraw.Draw(img)
         d.line([ax, 166, ax, 330], fill=(20, 18, 26), width=4)
@@ -1056,7 +1076,7 @@ def dungeon_bg(name):
     # raios de luar
     rays = Image.new("RGBA", (W, H)); rd = ImageDraw.Draw(rays)
     for ax in range(160, W, 320):
-        rd.polygon([(ax - 26, 200), (ax + 26, 200), (ax + 140, 720), (ax + 20, 720)], fill=(140, 170, 230, 40))
+        rd.polygon([(ax - 26, 200), (ax + 26, 200), (ax + 140, 720), (ax + 20, 720)], fill=(110, 140, 210, 26))
     rays = rays.filter(ImageFilter.GaussianBlur(12))
     img.alpha_composite(rays)
     img.convert("RGB").save(os.path.join(OUT, name + ".png"), optimize=True)
@@ -1084,15 +1104,15 @@ def dungeon_mid(name):
     d = ImageDraw.Draw(img)
     for px in range(0, W, 427):
         x = px + 213
-        d.rectangle([x - 40, 0, x + 40, H], fill=(30, 27, 38))
-        d.rectangle([x - 52, 0, x + 52, 40], fill=(40, 36, 50))
-        d.rectangle([x - 52, 560, x + 52, H], fill=(40, 36, 50))
+        d.rectangle([x - 40, 0, x + 40, H], fill=(18, 16, 24))
+        d.rectangle([x - 52, 0, x + 52, 40], fill=(26, 23, 32))
+        d.rectangle([x - 52, 560, x + 52, H], fill=(26, 23, 32))
         for k in (-20, 0, 20):
             d.line([x + k, 40, x + k, 560], fill=(22, 20, 28), width=3)
         # estandarte rasgado
-        d.rectangle([x + 70, 80, x + 120, 300], fill=(90, 18, 26))
+        d.rectangle([x + 70, 80, x + 120, 300], fill=(62, 10, 16))
         d.polygon([(x + 70, 300), (x + 85, 280), (x + 95, 310), (x + 108, 285), (x + 120, 300)], fill=(0, 0, 0, 0))
-        d.regular_polygon((x + 95, 150, 13), 5, fill=(170, 130, 50))
+        d.regular_polygon((x + 95, 150, 13), 5, fill=(120, 90, 36))
     a = np.array(img).astype(np.float32)
     n = tnoise(W, H, 40, 22, 3, 5)
     a[:, :, :3] *= (0.85 + 0.3 * n[:, :, None])
@@ -1106,7 +1126,7 @@ def village_mid(name):
     d = ImageDraw.Draw(img)
     r = random.Random(17)
     base = 520
-    col = (88, 112, 98); col_d = (70, 92, 82)
+    col = (34, 34, 42); col_d = (24, 24, 32)
     x = 0
     while x < W:
         kind = r.random()
@@ -1117,13 +1137,13 @@ def village_mid(name):
             for k in range(r.randint(1, 3)):
                 wx = x + 15 + k * 32
                 if wx + 14 < x + hw:
-                    d.rectangle([wx, base - hh + 20, wx + 14, base - hh + 40], fill=(255, 214, 130, 255))
+                    d.rectangle([wx, base - hh + 20, wx + 14, base - hh + 40], fill=(255, 140, 60, 255))
             d.rectangle([x + hw * 0.7, base - hh - hw * 0.45, x + hw * 0.7 + 12, base - hh - 10], fill=col_d)
             x += hw + r.uniform(10, 40)
         elif kind < 0.8:
             s = r.uniform(40, 70)
-            d.ellipse([x, base - s * 3.2, x + s * 2, base - s * 1.2], fill=(70, 104, 80))
-            d.rectangle([x + s - 5, base - s * 1.4, x + s + 5, H], fill=(60, 72, 64))
+            d.ellipse([x, base - s * 3.2, x + s * 2, base - s * 1.2], fill=(26, 32, 30))
+            d.rectangle([x + s - 5, base - s * 1.4, x + s + 5, H], fill=(22, 24, 24))
             x += s * 2 + r.uniform(0, 30)
         else:
             # torre de igreja
@@ -1131,17 +1151,23 @@ def village_mid(name):
             d.polygon([(x - 6, base - 190), (x + 30, base - 290), (x + 66, base - 190)], fill=col_d)
             d.line([x + 30, base - 290, x + 30, base - 320], fill=col_d, width=4)
             d.line([x + 18, base - 308, x + 42, base - 308], fill=col_d, width=4)
-            d.ellipse([x + 20, base - 160, x + 40, base - 140], fill=(255, 214, 130))
+            d.ellipse([x + 20, base - 160, x + 40, base - 140], fill=(255, 140, 60))
             x += 90
-    d.rectangle([0, base, W, H], fill=(76, 104, 74))
+    d.rectangle([0, base, W, H], fill=(20, 22, 22))
+    glow = Image.new("RGBA", (W, H)); gd = ImageDraw.Draw(glow)
+    for gx in (200, 700, 1100):
+        gd.ellipse([gx - 160, base - 260, gx + 160, base + 40], fill=(255, 90, 30, 70))
+    glow = glow.filter(ImageFilter.GaussianBlur(40))
+    out = Image.new("RGBA", (W, H)); out.alpha_composite(glow); out.alpha_composite(img)
+    img = out
     img.save(os.path.join(OUT, name + ".png"), optimize=True)
     print("ok", name)
 
 def title_bg():
     W, H = 1280, 720
-    img = grad_layer((W, H), (40, 30, 70), (230, 130, 70))
+    img = grad_layer((W, H), (8, 6, 12), (120, 30, 22))
     glow = Image.new("RGBA", (W, H)); gd = ImageDraw.Draw(glow)
-    gd.ellipse([440, 260, 840, 660], fill=(255, 200, 120, 160))
+    gd.ellipse([440, 300, 840, 700], fill=(255, 90, 40, 120))
     glow = glow.filter(ImageFilter.GaussianBlur(60)); img.alpha_composite(glow)
     img.convert("RGB").save(os.path.join(OUT, "bg_title_sky.png"))
     print("ok bg_title_sky")
@@ -1159,16 +1185,17 @@ if __name__ == "__main__":
     flag("flag_on", RED, RED_D, True); flag("flag_off", (120, 115, 105), (80, 76, 70), False)
     tower(); castle_gate(); pillar(); chain(); throne(); skulls(); weapon_rack(); knight_statue(); windmill()
     coin(); potion(); heart(); bola(); dart(); fireball(); magic_orb(); spikes()
-    parchment(); wood_button("ui_button", WOOD_L, WOOD_D); wood_button("ui_button_hover", (200, 150, 90), WOOD); crest()
-    # fundos
-    sky("bg_sky_day", (70, 130, 210), (190, 220, 240), sun=(1000, 140, 50, (255, 240, 180)), clouds=14)
-    sky("bg_sky_sunset", (60, 40, 100), (250, 150, 80), sun=(640, 470, 80, (255, 170, 80)), clouds=8, cloud_col=(255, 170, 140))
-    sky("bg_sky_night", (8, 10, 30), (40, 40, 80), sun=(1050, 120, 40, (210, 220, 255)), stars=True)
-    hills_layer("bg_day_far", (120, 160, 190), (150, 185, 200), 380, 40, 2, 10, castle=(830, (110, 140, 170), 1.2), trees=50, tree_col=(105, 145, 170))
-    hills_layer("bg_day_near", (100, 150, 80), (70, 110, 60), 460, 30, 3, 11, trees=70, houses=6, tree_col=(70, 120, 60))
+    parchment(); wood_button("ui_button", (70, 48, 34), (30, 20, 16)); wood_button("ui_button_hover", (118, 72, 40), (50, 30, 20)); crest()
+    # fundos (tema sombrio)
+    sky("bg_sky_day", (8, 6, 16), (60, 22, 26), sun=(1000, 150, 46, (210, 70, 50)), stars=True, clouds=16,
+        cloud_col=(26, 18, 24), horizon=(150, 45, 22))
+    sky("bg_sky_sunset", (6, 5, 10), (54, 14, 20), sun=None, clouds=22, cloud_col=(20, 14, 20), horizon=(110, 20, 24))
+    sky("bg_sky_night", (3, 4, 10), (18, 16, 32), sun=(1050, 120, 40, (170, 185, 220)), stars=True)
+    hills_layer("bg_day_far", (30, 24, 38), (18, 15, 26), 380, 40, 2, 10, castle=(830, (14, 12, 22), 1.2), trees=50, tree_col=(22, 18, 30))
+    hills_layer("bg_day_near", (24, 28, 28), (14, 17, 18), 460, 30, 3, 11, trees=70, houses=6, tree_col=(18, 22, 22))
     village_mid("bg_day_mid")
-    hills_layer("bg_sunset_far", (120, 70, 110), (150, 90, 110), 400, 50, 2, 12, trees=40, tree_col=(100, 60, 95), haze=(250, 150, 110))
-    castle_wall_layer("bg_sunset_wall", (110, 90, 100), (90, 72, 84), (255, 190, 100), 430, 3)
+    hills_layer("bg_sunset_far", (34, 20, 30), (20, 12, 20), 400, 50, 2, 12, trees=40, tree_col=(24, 14, 22), haze=(110, 24, 26))
+    castle_wall_layer("bg_sunset_wall", (52, 44, 52), (38, 32, 42), (255, 140, 60), 430, 3)
     dungeon_bg("bg_dungeon_back"); dungeon_mid("bg_dungeon_mid")
-    hills_layer("bg_night_far", (30, 30, 60), (20, 20, 40), 420, 40, 2, 14, castle=(640, (22, 22, 44), 1.6), trees=40, tree_col=(26, 26, 50))
+    hills_layer("bg_night_far", (18, 18, 34), (10, 10, 22), 420, 40, 2, 14, castle=(640, (10, 10, 20), 1.6), trees=40, tree_col=(14, 14, 28))
     title_bg()

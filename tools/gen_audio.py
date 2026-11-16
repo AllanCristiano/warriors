@@ -175,3 +175,15 @@ def music():
 if __name__ == "__main__":
     sfx()
     music()
+
+
+def thunder():
+    d = 2.6
+    n = lowpass(noise(d), 0.04) * 3 + lowpass(noise(d), 0.15) * env(int(SR * d), 0.001, 9)
+    tt = t(d)
+    rumble = (0.6 + 0.4 * np.sin(tt * 7) * np.sin(tt * 3.1)) * env(len(tt), 0.02, 1.4)
+    write("thunder", n * rumble, 0.9)
+
+
+if __name__ == "__main__" and True:
+    thunder()
