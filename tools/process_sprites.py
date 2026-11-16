@@ -98,6 +98,22 @@ def main():
         meta[name] = cm
     with open(os.path.join(OUT, "sprites.json"), "w") as fp:
         json.dump(meta, fp, indent=1)
+    write_gd(meta)
+
+def write_gd(meta):
+    """Exporta os metadados como script GDScript (funciona no jogo exportado)."""
+    path = os.path.join(ROOT, "scripts", "sprite_meta.gd")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fp:
+        fp.write("# Gerado por tools/process_sprites.py - nao edite a mao\n")
+        fp.write("class_name SpriteMeta\nextends RefCounted\n\nconst DATA := ")
+        fp.write(json.dumps(meta, indent="\t"))
+        fp.write("\n")
 
 if __name__ == "__main__":
-    main()
+    import sys
+    if "--meta-only" in sys.argv:
+        with open(os.path.join(OUT, "sprites.json")) as fp:
+            write_gd(json.load(fp))
+    else:
+        main()

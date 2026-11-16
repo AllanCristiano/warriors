@@ -1,0 +1,242 @@
+# Gerado por tools/process_sprites.py - nao edite a mao
+class_name SpriteMeta
+extends RefCounted
+
+const DATA := {
+	"cavaleiro": {
+		"cell": [
+			138,
+			127
+		],
+		"anchor": [
+			62.2,
+			124.9
+		],
+		"anims": {
+			"idle": {
+				"frames": 14,
+				"cols": 14
+			},
+			"walk": {
+				"frames": 18,
+				"cols": 18
+			}
+		}
+	},
+	"barbaro": {
+		"cell": [
+			288,
+			217
+		],
+		"anchor": [
+			135.9,
+			209.0
+		],
+		"anims": {
+			"idle": {
+				"frames": 39,
+				"cols": 28
+			},
+			"walk": {
+				"frames": 34,
+				"cols": 28
+			},
+			"attack": {
+				"frames": 55,
+				"cols": 28
+			},
+			"die": {
+				"frames": 25,
+				"cols": 25
+			}
+		}
+	},
+	"sabio": {
+		"cell": [
+			108,
+			125
+		],
+		"anchor": [
+			32.5,
+			123.8
+		],
+		"anims": {
+			"idle": {
+				"frames": 15,
+				"cols": 15
+			},
+			"attack": {
+				"frames": 12,
+				"cols": 12
+			}
+		}
+	},
+	"goblin_guerreiro": {
+		"cell": [
+			140,
+			201
+		],
+		"anchor": [
+			64.4,
+			199.1
+		],
+		"anims": {
+			"walk": {
+				"frames": 15,
+				"cols": 15
+			},
+			"attack": {
+				"frames": 14,
+				"cols": 14
+			},
+			"jump": {
+				"frames": 17,
+				"cols": 17
+			}
+		}
+	},
+	"goblin_lanca": {
+		"cell": [
+			165,
+			135
+		],
+		"anchor": [
+			56.1,
+			133.1
+		],
+		"anims": {
+			"walk": {
+				"frames": 25,
+				"cols": 25
+			},
+			"defense": {
+				"frames": 9,
+				"cols": 9
+			},
+			"hurt": {
+				"frames": 11,
+				"cols": 11
+			}
+		}
+	},
+	"goblin_boleadeira": {
+		"cell": [
+			117,
+			87
+		],
+		"anchor": [
+			50.1,
+			85.8
+		],
+		"anims": {
+			"idle": {
+				"frames": 19,
+				"cols": 19
+			},
+			"attack": {
+				"frames": 18,
+				"cols": 18
+			}
+		}
+	},
+	"goblin_mago": {
+		"cell": [
+			211,
+			122
+		],
+		"anchor": [
+			93.5,
+			118.3
+		],
+		"anims": {
+			"idle": {
+				"frames": 23,
+				"cols": 23
+			},
+			"walk": {
+				"frames": 32,
+				"cols": 32
+			},
+			"attack": {
+				"frames": 14,
+				"cols": 14
+			},
+			"hurt": {
+				"frames": 7,
+				"cols": 7
+			},
+			"die": {
+				"frames": 14,
+				"cols": 14
+			}
+		}
+	},
+	"goblin_general": {
+		"cell": [
+			214,
+			170
+		],
+		"anchor": [
+			104.7,
+			168.3
+		],
+		"anims": {
+			"idle": {
+				"frames": 10,
+				"cols": 10
+			},
+			"attack": {
+				"frames": 14,
+				"cols": 14
+			},
+			"hurt": {
+				"frames": 7,
+				"cols": 7
+			}
+		}
+	},
+	"minotauro": {
+		"cell": [
+			220,
+			202
+		],
+		"anchor": [
+			110.2,
+			200.2
+		],
+		"anims": {
+			"walk": {
+				"frames": 14,
+				"cols": 14
+			},
+			"roll": {
+				"frames": 17,
+				"cols": 17
+			},
+			"attack": {
+				"frames": 10,
+				"cols": 10
+			}
+		}
+	},
+	"cerberus": {
+		"cell": [
+			411,
+			294
+		],
+		"anchor": [
+			227.5,
+			291.9
+		],
+		"anims": {
+			"idle": {
+				"frames": 20,
+				"cols": 19
+			},
+			"howl": {
+				"frames": 20,
+				"cols": 19
+			}
+		}
+	}
+}
