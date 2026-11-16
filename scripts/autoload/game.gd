@@ -67,6 +67,48 @@ func _ready() -> void:
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_fade.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_fade_layer.add_child(_fade)
+	_debug_args()
+
+
+# Debug: godot --path . <cena> -- --hero=barbaro --x=3000 --shot=arquivo.png --frames=90
+var _shots: Array = []
+var _frame := 0
+
+func _debug_args() -> void:
+	var args := {}
+	for a in OS.get_cmdline_user_args():
+		var kv := a.trim_prefix("--").split("=")
+		args[kv[0]] = kv[1] if kv.size() > 1 else ""
+	if args.is_empty():
+		return
+	if args.has("hero"):
+		hero_id = args["hero"]
+	if args.has("x"):
+		checkpoint = Vector2(float(args["x"]), float(args.get("y", "540")))
+	if args.has("shot"):
+		var frames := int(args.get("frames", "90"))
+		for i in int(args.get("count", "1")):
+			_shots.append([frames * (i + 1), args["shot"].replace(".png", "_%d.png" % i)])
+	set_meta("debug_args", args)
+
+
+func _process(_delta: float) -> void:
+	if _shots.is_empty():
+		return
+	_frame += 1
+	var act: Dictionary = get_meta("debug_args", {})
+	if act.has("walk"):
+		Input.action_press("right")
+	if act.has("attack") and _frame % 30 == 0:
+		Input.action_press("attack")
+	elif act.has("attack") and _frame % 30 == 2:
+		Input.action_release("attack")
+	if _frame >= _shots[0][0]:
+		var img := get_viewport().get_texture().get_image()
+		img.save_png(_shots[0][1])
+		_shots.pop_front()
+		if _shots.is_empty():
+			get_tree().quit()
 
 
 func _setup_fonts() -> void:
