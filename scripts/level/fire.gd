@@ -27,7 +27,7 @@ func _build() -> void:
 		sm.gravity = Vector2(14, -20)
 		sm.material = null
 		add_child(sm)
-	var fl := _particles(46, 0.7, Color(1, 0.9, 0.5, 1), Color(0.9, 0.15, 0.02, 0.0), 60.0, 140.0, 14.0, 26.0)
+	var fl := _particles(34, 0.7, Color(1, 0.62, 0.22, 0.5), Color(0.8, 0.12, 0.02, 0.0), 60.0, 140.0, 14.0, 26.0)
 	fl.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
 	fl.emission_rect_extents = Vector2(26 * size, 6)
 	add_child(fl)
@@ -52,8 +52,9 @@ func _particles(amount: int, life: float, c0: Color, c1: Color, vmin: float, vma
 	p.initial_velocity_min = vmin * size
 	p.initial_velocity_max = vmax * size
 	p.gravity = Vector2(0, -40)
-	p.scale_amount_min = smin * size
-	p.scale_amount_max = smax * size
+	p.texture = Torch.soft_dot()
+	p.scale_amount_min = smin * size / 16.0
+	p.scale_amount_max = smax * size / 16.0
 	var curve := Curve.new()
 	curve.add_point(Vector2(0, 0.6))
 	curve.add_point(Vector2(0.3, 1))

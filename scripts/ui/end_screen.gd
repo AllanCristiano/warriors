@@ -12,6 +12,7 @@ func _ready() -> void:
 		Menu.full_texture(self, "res://assets/kingdom/bg_sky_day.png")
 		Menu.full_texture(self, "res://assets/kingdom/bg_day_far.png")
 		Menu.full_texture(self, "res://assets/kingdom/bg_day_mid.png")
+		Audio.play("checkpoint")
 	else:
 		Audio.music("music_dungeon")
 		Menu.full_texture(self, "res://assets/kingdom/bg_sky_night.png", Color(0.7, 0.5, 0.5))
@@ -25,9 +26,9 @@ func _ready() -> void:
 	s.play("idle")
 	stage.add_child(s)
 	if not victory:
-		s.modulate = Color(0.5, 0.45, 0.5)
-		s.rotation = -PI / 2
-	var place_hero := func(): s.position = Vector2(size.x * 0.18, size.y - 60 if victory else size.y - 40)
+		s.modulate = Color(0.75, 0.65, 0.7)
+		s.play("die")
+	var place_hero := func(): s.position = Vector2(size.x * 0.18, size.y - 60) if victory else Vector2(size.x * 0.5, size.y - 110)
 	place_hero.call()
 	resized.connect(place_hero)
 

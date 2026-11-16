@@ -26,7 +26,7 @@ static func spawn(parent: Node, k: String, pos: Vector2, v: Vector2, dmg: int, t
 	p.damage = dmg
 	p.target = tgt
 	p.position = pos
-	parent.add_child(p)
+	parent.add_child.call_deferred(p)
 	return p
 
 

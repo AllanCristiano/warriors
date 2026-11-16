@@ -54,7 +54,7 @@ static func parchment_panel() -> PanelContainer:
 	return p
 
 
-static func style_label(l: Label, size: int, c := Color(0.25, 0.13, 0.05), font: Font = null, outline := 0, oc := Color.BLACK) -> Label:
+static func style_label(l: Label, size: int, c := Color(0.9, 0.82, 0.66), font: Font = null, outline := 0, oc := Color.BLACK) -> Label:
 	l.add_theme_font_size_override("font_size", size)
 	l.add_theme_color_override("font_color", c)
 	if font:
@@ -95,7 +95,7 @@ func _ready() -> void:
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 4)
 	hb.add_child(vb)
-	var name_l := style_label(Label.new(), 22, Color(0.35, 0.1, 0.05), Game.font_title)
+	var name_l := style_label(Label.new(), 22, Color(0.95, 0.7, 0.32), Game.font_title)
 	name_l.name = "HeroName"
 	vb.add_child(name_l)
 	var hp_row := HBoxContainer.new()
@@ -183,7 +183,7 @@ func _build_pause(root: Control) -> void:
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 12)
 	p.add_child(vb)
-	var t := style_label(Label.new(), 48, Color(0.4, 0.1, 0.05), Game.font_title)
+	var t := style_label(Label.new(), 48, Color(0.95, 0.7, 0.32), Game.font_title)
 	t.text = "Pausa"
 	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(t)

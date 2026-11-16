@@ -4,6 +4,7 @@ extends Node2D
 ## Tocha de parede com chama em particulas e luz tremeluzente.
 
 static var _light_tex: Texture2D
+static var _dot_tex: Texture2D
 
 @export var light_energy := 1.0
 @export var light_scale := 2.2
@@ -28,6 +29,24 @@ static func light_texture() -> Texture2D:
 	return _light_tex
 
 
+## Ponto suave (32px) para particulas de fogo/fumaca. Escala 1 = ~32px.
+static func soft_dot() -> Texture2D:
+	if _dot_tex == null:
+		var g := Gradient.new()
+		g.set_color(0, Color(1, 1, 1, 1))
+		g.set_color(1, Color(1, 1, 1, 0))
+		g.add_point(0.45, Color(1, 1, 1, 0.55))
+		var gt := GradientTexture2D.new()
+		gt.gradient = g
+		gt.fill = GradientTexture2D.FILL_RADIAL
+		gt.fill_from = Vector2(0.5, 0.5)
+		gt.fill_to = Vector2(1.0, 0.5)
+		gt.width = 32
+		gt.height = 32
+		_dot_tex = gt
+	return _dot_tex
+
+
 func _ready() -> void:
 	var s := Sprite2D.new()
 	s.texture = load("res://assets/kingdom/torch.png")
@@ -42,8 +61,9 @@ func _ready() -> void:
 	p.initial_velocity_min = 40
 	p.initial_velocity_max = 80
 	p.gravity = Vector2(0, -60)
-	p.scale_amount_min = 9
-	p.scale_amount_max = 15
+	p.texture = soft_dot()
+	p.scale_amount_min = 0.5
+	p.scale_amount_max = 0.9
 	var curve := Curve.new()
 	curve.add_point(Vector2(0, 1))
 	curve.add_point(Vector2(1, 0.1))

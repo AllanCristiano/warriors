@@ -70,12 +70,14 @@ def q(s):
 
 
 class LevelBuilder:
-    def __init__(self, root, name, subtitle, music, width, ambient=None, kill_y=900):
+    def __init__(self, root, name, subtitle, music, width, ambient=None, kill_y=900, weather=""):
         s = self.s = Scene(root, "res://scripts/level/level.gd")
         s.root_props.update({"level_name": q(name), "subtitle": q(subtitle), "music": q(music),
                              "level_width": float(width), "kill_y": float(kill_y)})
         if ambient:
             s.root_props["ambient"] = "Color(%s, %s, %s, 1)" % ambient
+        if weather:
+            s.root_props["weather"] = q(weather)
         self.width = width
 
     # ----- fundos
@@ -98,6 +100,21 @@ class LevelBuilder:
         if modulate:
             sp["modulate"] = "Color(%s, %s, %s, 1)" % modulate
         s.node("Layer", "Sprite2D", name, sp)
+
+    def fog(self, y=430, scroll=1.25, alpha=0.5, color=(0.75, 0.7, 0.8), speed=-18):
+        s = self.s
+        s.node("Fog", "Parallax2D", ".", {"scroll_scale": v2(scroll, 1), "repeat_size": v2(1280, 0),
+                                          "repeat_times": 4, "autoscroll": v2(speed, 0), "z_index": 12})
+        s.node("Layer", "Sprite2D", "Fog", {
+            "texture": s.res("Texture2D", "res://assets/kingdom/fog.png"), "centered": "false",
+            "position": v2(0, y), "modulate": "Color(%s, %s, %s, %s)" % (color + (alpha,))})
+
+    def fire(self, x, y=GY, size=1.0, smoke=True):
+        props = {"position": v2(x, y), "script": self.s.res("Script", "res://scripts/level/fire.gd"),
+                 "size": float(size)}
+        if not smoke:
+            props["smoke"] = "false"
+        self.s.node(self.s.name("Fire"), "Node2D", "Decor", props)
 
     def groups(self):
         for g in ["Decor", "Terrain", "Hazards", "Items", "Checkpoints", "Enemies", "Foreground"]:
@@ -205,8 +222,8 @@ class LevelBuilder:
 # FASE 1 - Aldeia de Vale Dourado (dia, grama, casas, moinho, praca)
 # =====================================================================
 def level1():
-    L = LevelBuilder("Level1", "Aldeia de Vale Dourado", "Os goblins invadiram a aldeia! Defenda o povo do Rei.",
-                     "music_village", 8700)
+    L = LevelBuilder("Level1", "Aldeia em Chamas", "Os goblins incendeiam Vale Dourado. Defenda o povo do Rei!",
+                     "music_village", 8700, ambient=(0.72, 0.62, 0.68), weather="brasas")
     L.sky("bg_sky_day")
     L.parallax("FarHills", "bg_day_far", 0.15)
     L.parallax("NearHills", "bg_day_near", 0.3, 40)
@@ -219,6 +236,8 @@ def level1():
     L.prop("signpost", 330)
     L.prop("tree_oak", 80)
     L.prop("house_a", 640)
+    L.fire(700, GY - 200, 1.3)
+    L.torch(470, GY - 140)
     L.prop("fence", 860); L.prop("fence", 988)
     L.prop("tree_oak", 1150, flip=True)
     L.prop("haystack", 1290)
@@ -237,6 +256,9 @@ def level1():
     L.ground(1740, 3300)
     L.prop("market_stall", 1900)
     L.prop("house_b", 2250)
+    L.fire(2310, GY - 260, 1.5)
+    L.fire(3000, GY - 40, 0.9)
+    L.torch(1820, GY - 150)
     L.prop("banner_red", 2180, GY - 110, sink=0, sway=True)
     L.prop("well", 2620)
     L.prop("cart", 3000)
@@ -254,6 +276,8 @@ def level1():
     # --- trecho 3: colina do moinho (terreno elevado)
     L.ground(3300, 4600, GY - 100)
     L.prop("windmill", 3750, GY - 100)
+    L.fire(3500, GY - 150, 1.1)
+    L.torch(4300, GY - 250)
     L.prop("haystack", 3500, GY - 100)
     L.prop("tree_oak", 4250, GY - 100)
     L.prop("fence", 4000, GY - 100); L.prop("fence", 4128, GY - 100)
@@ -273,7 +297,10 @@ def level1():
     # --- trecho 4: rua das casas
     L.ground(4920, 6300)
     L.prop("house_a", 5150, flip=True)
+    L.fire(5080, GY - 190, 1.4)
     L.prop("house_b", 5650)
+    L.fire(5700, GY - 280, 1.2)
+    L.torch(6000, GY - 150)
     L.prop("banner_blue", 5560, GY - 110, sink=0, sway=True)
     L.prop("tree_pine", 5950)
     L.prop("market_stall", 6150)
@@ -288,6 +315,8 @@ def level1():
     # --- arena: praca da aldeia (chefe: General Goblin)
     L.ground(6300, 8700)
     L.prop("well", 7000)
+    L.fire(6600, GY, 1.0); L.fire(7700, GY, 1.0)
+    L.torch(7050, GY - 230); L.torch(8100, GY - 160)
     L.prop("house_b", 7250, mod=(0.85, 0.85, 0.9))
     L.prop("banner_red", 7180, GY - 110, sink=0, sway=True)
     L.prop("house_a", 6750, flip=True, mod=(0.85, 0.85, 0.9))
@@ -297,6 +326,7 @@ def level1():
     L.arena(6400, 1500, boss)
     L.goal(8350)
     L.prop("signpost", 8100)
+    L.fog(440, 1.25, 0.45, (0.7, 0.55, 0.55))
     L.save(1)
 
 
@@ -304,8 +334,8 @@ def level1():
 # FASE 2 - Muralhas de Pedraforte (por do sol, muralhas, fosso, torres)
 # =====================================================================
 def level2():
-    L = LevelBuilder("Level2", "Muralhas de Pedraforte", "As hordas cercam o castelo. Abra caminho pelas muralhas!",
-                     "music_castle", 9400, ambient=(1.0, 0.9, 0.85))
+    L = LevelBuilder("Level2", "Muralhas de Pedraforte", "Sob a tempestade, as hordas cercam o castelo. Abra caminho!",
+                     "music_castle", 9400, ambient=(0.62, 0.58, 0.7), weather="chuva")
     L.sky("bg_sky_sunset")
     L.parallax("FarHills", "bg_sunset_far", 0.15)
     L.parallax("Walls", "bg_sunset_wall", 0.4, 40)
@@ -385,6 +415,8 @@ def level2():
     boss = L.enemy("minotauro", 8500, name="Boss", dormant=True)
     L.arena(7500, 1500, boss)
     L.goal(9150)
+    L.fire(4850, GY - 120, 0.8); L.fire(6900, GY, 0.9)
+    L.fog(450, 1.3, 0.4, (0.55, 0.55, 0.7))
     L.save(2)
 
 
@@ -393,7 +425,7 @@ def level2():
 # =====================================================================
 def level3():
     L = LevelBuilder("Level3", "Masmorras do Trono", "Cérbero guarda o trono roubado. Desça às masmorras e liberte o reino!",
-                     "music_dungeon", 9000, ambient=(0.38, 0.36, 0.5))
+                     "music_dungeon", 9000, ambient=(0.4, 0.38, 0.52), weather="poeira")
     L.sky("bg_sky_night")
     L.parallax("DungeonBack", "bg_dungeon_back", 0.25, -40)
     L.parallax("DungeonMid", "bg_dungeon_mid", 0.5, 0)
@@ -469,6 +501,8 @@ def level3():
     boss = L.enemy("cerberus", 8300, name="Boss", dormant=True)
     L.arena(6950, 1700, boss)
     L.goal(8880)
+    L.fire(7500, GY, 0.8, False); L.fire(8500, GY, 0.8, False)
+    L.fog(470, 1.2, 0.35, (0.45, 0.5, 0.7))
     L.save(3)
 
 

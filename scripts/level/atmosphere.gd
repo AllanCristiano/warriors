@@ -22,8 +22,9 @@ func _ready() -> void:
 			p.initial_velocity_min = 40
 			p.initial_velocity_max = 110
 			p.gravity = Vector2(10, -6)
-			p.scale_amount_min = 2
-			p.scale_amount_max = 5
+			p.texture = Torch.soft_dot()
+			p.scale_amount_min = 0.12
+			p.scale_amount_max = 0.3
 			p.color_ramp = _grad(Color(1, 0.75, 0.3, 1), Color(1, 0.25, 0.05, 0))
 			_add(p)
 			var ash := _p(50, 9.0, Vector2(vp.x * 0.7, 10), Vector2(vp.x / 2, -20))
@@ -62,8 +63,9 @@ func _ready() -> void:
 			d.initial_velocity_min = 4
 			d.initial_velocity_max = 18
 			d.gravity = Vector2.ZERO
-			d.scale_amount_min = 1.5
-			d.scale_amount_max = 3.5
+			d.texture = Torch.soft_dot()
+			d.scale_amount_min = 0.1
+			d.scale_amount_max = 0.25
 			d.color_ramp = _grad(Color(0.7, 0.75, 1.0, 0.0), Color(0.7, 0.75, 1.0, 0.0), Color(0.7, 0.8, 1.0, 0.5))
 			_add(d)
 	# vinheta

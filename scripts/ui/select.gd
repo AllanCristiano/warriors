@@ -86,11 +86,11 @@ func _make_card(id: String, i: int) -> Control:
 	stage.add_child(s)
 	_sprites.append(s)
 
-	var name_l := HUD.style_label(Label.new(), 36, Color(0.42, 0.1, 0.05), Game.font_title)
+	var name_l := HUD.style_label(Label.new(), 36, Color(0.96, 0.7, 0.32), Game.font_title)
 	name_l.text = d["name"]
 	name_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(name_l)
-	var title_l := HUD.style_label(Label.new(), 18, Color(0.3, 0.18, 0.08))
+	var title_l := HUD.style_label(Label.new(), 18, Color(0.82, 0.72, 0.58))
 	title_l.text = d["title"]
 	title_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(title_l)
@@ -98,19 +98,19 @@ func _make_card(id: String, i: int) -> Control:
 	for stat in d["stats"]:
 		var r := HBoxContainer.new()
 		r.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var l := HUD.style_label(Label.new(), 17, Color(0.25, 0.13, 0.05))
+		var l := HUD.style_label(Label.new(), 17, Color(0.9, 0.82, 0.66))
 		l.text = stat
 		l.custom_minimum_size.x = 100
 		r.add_child(l)
 		for k in 5:
 			var pip := ColorRect.new()
 			pip.custom_minimum_size = Vector2(36, 14)
-			pip.color = Color(0.75, 0.15, 0.12) if k < d["stats"][stat] else Color(0.45, 0.35, 0.25, 0.4)
+			pip.color = Color(0.75, 0.15, 0.12) if k < d["stats"][stat] else Color(0.3, 0.24, 0.22, 0.8)
 			r.add_child(pip)
 		r.add_theme_constant_override("separation", 5)
 		vb.add_child(r)
 
-	var desc := HUD.style_label(Label.new(), 14, Color(0.22, 0.12, 0.05))
+	var desc := HUD.style_label(Label.new(), 14, Color(0.78, 0.72, 0.62))
 	desc.text = d["desc"]
 	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	desc.custom_minimum_size = Vector2(330, 90)

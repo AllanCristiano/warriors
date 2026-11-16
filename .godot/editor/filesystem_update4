@@ -1,9 +1,0 @@
-res://scripts/enemy.gd
-res://scripts/fx.gd
-res://scripts/autoload/game.gd
-res://scripts/level/boss_arena.gd
-res://scripts/level/goal.gd
-res://scripts/level/level.gd
-res://scripts/level/torch.gd
-res://scripts/ui/end_screen.gd
-res://scripts/ui/hud.gd

@@ -35,7 +35,7 @@ const HEROES := {
 }
 
 const LEVELS := [
-	{"scene": "res://scenes/levels/level_1.tscn", "name": "Aldeia de Vale Dourado"},
+	{"scene": "res://scenes/levels/level_1.tscn", "name": "Aldeia em Chamas"},
 	{"scene": "res://scenes/levels/level_2.tscn", "name": "Muralhas de Pedraforte"},
 	{"scene": "res://scenes/levels/level_3.tscn", "name": "Masmorras do Trono"},
 ]

@@ -20,8 +20,8 @@ Abra o projeto no Godot (`project.godot`) e aperte F5.
 - **Mestre Liang (Sábio Marcial)**: ataca à distância com dardos, pulo duplo. Especial *Leque de Dardos*.
 
 ### Fases
-1. **Aldeia de Vale Dourado**: casas de enxaimel, mercado, moinho, fosso com água e espinhos. Chefe: *Grukk, o General Goblin*.
-2. **Muralhas de Pedraforte**: ponte levadiça, torres, escadarias de pedra, fossos. Chefe: *Tauron, o Minotauro*.
+1. **Aldeia em Chamas**: noite de lua de sangue, casas incendiadas, brasas no ar, fosso com água e espinhos. Chefe: *Grukk, o General Goblin*.
+2. **Muralhas de Pedraforte**: tempestade com chuva e relâmpagos, ponte levadiça, torres, escadarias de pedra, fossos. Chefe: *Tauron, o Minotauro*.
 3. **Masmorras do Trono**: escuridão com tochas, rios de lava, corredor de espinhos, sala do trono. Chefe final: *Cérbero*.
 
 ## Estrutura
@@ -34,7 +34,9 @@ Abra o projeto no Godot (`project.godot`) e aperte F5.
 
 ## Ferramentas (pasta `tools/`, ignorada pelo Godot)
 - `python tools/process_sprites.py`: recorta as spritesheets originais para `assets/sprites`.
-- `python tools/gen_kingdom.py`: regenera os assets do reino.
+- `python tools/gen_anims.py`: gera as animações que faltavam nas spritesheets (ataque/investida/pulo/dano/morte do
+  cavaleiro, andar do sábio, mortes e dano de goblins, minotauro e Cérbero...). Rode depois de `process_sprites.py`.
+- `python tools/gen_kingdom.py`: regenera os assets do reino (tema sombrio).
 - `python tools/gen_audio.py`: regenera sons e músicas.
 - `python tools/build_levels.py`: regenera as 3 fases a partir do design em código.
   **Atenção:** isso sobrescreve edições feitas nas fases pelo editor.

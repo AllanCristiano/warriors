@@ -20,6 +20,8 @@
 [ext_resource type="Material" path="res://shaders/sway.tres" id="r18"]
 [ext_resource type="Script" path="res://scripts/level/boss_arena.gd" id="r19"]
 [ext_resource type="Script" path="res://scripts/level/goal.gd" id="r20"]
+[ext_resource type="Script" path="res://scripts/level/fire.gd" id="r21"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/fog.png" id="r22"]
 
 [node name="Level3" type="Node2D"]
 script = ExtResource("r1")
@@ -28,7 +30,8 @@ subtitle = "Cérbero guarda o trono roubado. Desça às masmorras e liberte o re
 music = "music_dungeon"
 level_width = 9000.0
 kill_y = 900.0
-ambient = Color(0.38, 0.36, 0.5, 1)
+ambient = Color(0.4, 0.38, 0.52, 1)
+weather = "poeira"
 
 [node name="Sky" type="CanvasLayer" parent="."]
 layer = -100
@@ -572,3 +575,28 @@ arena_width = 1700.0
 script = ExtResource("r20")
 position = Vector2(8880, 564)
 texture_name = "castle_gate"
+
+[node name="Fire1" type="Node2D" parent="Decor"]
+script = ExtResource("r21")
+position = Vector2(7500, 560)
+size = 0.8
+smoke = false
+
+[node name="Fire2" type="Node2D" parent="Decor"]
+script = ExtResource("r21")
+position = Vector2(8500, 560)
+size = 0.8
+smoke = false
+
+[node name="Fog" type="Parallax2D" parent="."]
+scroll_scale = Vector2(1.2, 1)
+repeat_size = Vector2(1280, 0)
+repeat_times = 4
+autoscroll = Vector2(-18, 0)
+z_index = 12
+
+[node name="Layer" type="Sprite2D" parent="Fog"]
+texture = ExtResource("r22")
+centered = false
+position = Vector2(0, 470)
+modulate = Color(0.45, 0.5, 0.7, 0.35)
