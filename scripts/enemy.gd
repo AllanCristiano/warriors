@@ -45,9 +45,8 @@ var state_time := 0.0
 var cooldown := 1.0
 var special_cd := 4.0
 var home_x := 0.0
-var sprite: AnimatedSprite2D
+var sprite: CharSprite
 var shape: CollisionShape2D
-var _base_offset := Vector2.ZERO
 var _phase2 := false
 var _summoned := false
 var _contact_cd := 0.0
@@ -78,7 +77,6 @@ func _build() -> void:
 			c.free()
 	sprite = SpriteLib.make_sprite(kind)
 	sprite.set_meta("gen", true)
-	_base_offset = sprite.offset
 	add_child(sprite)
 	sprite.play("idle")
 	if not Engine.is_editor_hint():
@@ -99,8 +97,7 @@ func _build() -> void:
 func _set_facing(f: float) -> void:
 	facing = f
 	if sprite:
-		sprite.flip_h = f < 0
-		sprite.offset.x = _base_offset.x * f
+		sprite.set_facing(f)
 
 
 func is_boss() -> bool:
@@ -369,7 +366,7 @@ func _ai_cerberus(delta: float, hero: Hero, to_hero: Vector2, dist: float) -> vo
 					_pounce_hit = false
 					var tx := clampf(to_hero.x, -650, 650)
 					velocity = Vector2(tx * 1.25, -1050)
-					sprite.play("walk")
+					sprite.play("leap")
 					Audio.play("roar", -2, 0.1)
 				cooldown = cfg["attack_cd"] * (0.65 if _phase2 else 1.0) + 1.0
 		"special":

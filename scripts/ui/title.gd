@@ -26,8 +26,7 @@ func _ready() -> void:
 		var s := SpriteLib.make_sprite(e[0])
 		s.position = Vector2(e[1], 626)
 		if e[2] < 0:
-			s.flip_h = true
-			s.offset.x = -s.offset.x
+			s.set_facing(-1)
 		s.play("idle")
 		s.frame = randi() % 5
 		stage.add_child(s)

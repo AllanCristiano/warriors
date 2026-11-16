@@ -25,10 +25,8 @@ var jump_buffer := 0.0
 var combo := 0
 var dash_hit: Array = []
 var shake := 0.0
-var sprite: AnimatedSprite2D
+var sprite: CharSprite
 var camera: Camera2D
-var _base_offset := Vector2.ZERO
-var _bob := 0.0
 var level: Node = null
 var last_safe := Vector2.INF
 
@@ -53,7 +51,6 @@ func _ready() -> void:
 	add_child(cs)
 
 	sprite = SpriteLib.make_sprite(data["sprite"])
-	_base_offset = sprite.offset
 	add_child(sprite)
 	sprite.play("idle")
 	sprite.frame_changed.connect(_on_frame)
@@ -124,8 +121,6 @@ func _physics_process(delta: float) -> void:
 		"attack", "special":
 			var air_ctrl := 0.4 if not is_on_floor() else 0.0
 			velocity.x = move_toward(velocity.x, dir * data["speed"] * air_ctrl, 2400.0 * delta)
-			if state_time <= 0 and id == "cavaleiro":
-				state = "normal"
 		"dash":
 			velocity.x = facing * 980.0
 			velocity.y = 0
@@ -173,40 +168,36 @@ func _try_jump() -> void:
 
 func _set_facing(f: float) -> void:
 	facing = f
-	sprite.flip_h = f < 0
-	sprite.offset.x = _base_offset.x * f
+	sprite.set_facing(f)
 
 
-func _update_anim(dir: float, delta: float) -> void:
-	if state in ["attack", "special", "dead"] and sprite.animation != "idle" and sprite.animation != "walk":
-		return
-	if state == "dead" or state == "attack":
-		return
-	var has_walk := sprite.sprite_frames.has_animation("walk")
-	if not is_on_floor():
-		if has_walk:
-			sprite.play("walk")
-			sprite.pause()
-			sprite.frame = 3
-		else:
-			sprite.play("idle")
-			sprite.pause()
-		sprite.position.y = 0
-		return
-	if absf(velocity.x) > 30:
-		if has_walk:
-			sprite.play("walk")
-			sprite.speed_scale = clampf(absf(velocity.x) / data["speed"], 0.5, 1.3)
-		else:
-			sprite.play("idle")
-			sprite.speed_scale = 2.0
-			_bob += delta * 14.0
-			sprite.position.y = -absf(sin(_bob)) * 5.0
+func _anim(a: String, speed := 1.0) -> void:
+	sprite.speed_scale = speed
+	if sprite.animation != a or not sprite.is_playing():
+		sprite.play(a)
+
+
+func _update_anim(_dir: float, _delta: float) -> void:
+	match state:
+		"attack", "special", "dead":
 			return
+		"dash":
+			_anim("dash")
+			return
+		"hurt":
+			_anim("hurt")
+			return
+	if not is_on_floor():
+		if velocity.y < 0:
+			if sprite.animation != "jump":
+				_anim("jump")
+		else:
+			_anim("fall")
+		return
+	if absf(velocity.x) > 30 and state != "frozen":
+		_anim("walk", clampf(absf(velocity.x) / data["speed"], 0.5, 1.3))
 	else:
-		sprite.play("idle")
-		sprite.speed_scale = 1.0
-	sprite.position.y = 0
+		_anim("idle")
 
 
 # ------------------------------------------------------------------ ataques
@@ -216,29 +207,15 @@ func _start_attack() -> void:
 	match id:
 		"cavaleiro":
 			state = "attack"
-			state_time = 0.26
 			combo = (combo + 1) % 2
-			sprite.play("walk")
-			sprite.pause()
-			sprite.frame = 5 if combo == 0 else 12
-			var tw := create_tween()
-			tw.tween_property(sprite, "rotation", facing * 0.12, 0.06)
-			tw.tween_property(sprite, "rotation", 0.0, 0.18)
-			Audio.play("swing", -2)
-			velocity.x = facing * 160.0
-			FX.spawn(self, "slash" if combo == 0 else "slash_up", Vector2(facing * 40, -60), facing, Color(0.9, 0.95, 1.0), 1.0)
-			get_tree().create_timer(0.06).timeout.connect(func():
-				if state != "dead": _melee(data["damage"], data["reach"]))
+			_anim("attack" if combo == 1 else "attack2")
+			velocity.x = facing * 120.0
 		"barbaro":
 			state = "attack"
-			sprite.speed_scale = 1.0
-			sprite.position.y = 0
-			sprite.play("attack")
+			_anim("attack")
 		"sabio":
 			state = "attack"
-			sprite.speed_scale = 1.4
-			sprite.position.y = 0
-			sprite.play("attack")
+			_anim("attack", 1.4)
 
 
 func _start_special() -> void:
@@ -250,22 +227,24 @@ func _start_special() -> void:
 			state_time = 0.3
 			invuln = maxf(invuln, 0.45)
 			dash_hit.clear()
-			sprite.play("walk")
+			_anim("dash")
 			Audio.play("swing", 2, 0.0)
 		"barbaro":
 			state = "special"
-			sprite.speed_scale = 1.0
-			sprite.play("special")
+			_anim("special")
 			Audio.play("swing", 0, 0.0)
 		"sabio":
 			state = "special"
-			sprite.speed_scale = 1.8
-			sprite.play("attack")
+			_anim("attack", 1.8)
 
 
 func _on_frame() -> void:
 	if state == "attack":
-		if id == "barbaro" and sprite.animation == "attack" and sprite.frame == 6:
+		if id == "cavaleiro" and sprite.frame == 2:
+			Audio.play("swing", -2)
+		elif id == "cavaleiro" and sprite.frame == 3:
+			_melee(data["damage"], data["reach"])
+		elif id == "barbaro" and sprite.animation == "attack" and sprite.frame == 6:
 			Audio.play("swing")
 			FX.spawn(self, "slash", Vector2(facing * 50, -60), facing, Color(0.8, 0.7, 0.5), 1.3)
 			_melee(data["damage"], data["reach"])

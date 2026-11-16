@@ -16,6 +16,90 @@
    "walk": {
     "frames": 18,
     "cols": 18
+   },
+   "gen_attack": {
+    "frames": 8,
+    "cols": 8,
+    "cell": [
+     157,
+     150
+    ],
+    "anchor": [
+     57,
+     147
+    ]
+   },
+   "gen_attack2": {
+    "frames": 8,
+    "cols": 8,
+    "cell": [
+     145,
+     145
+    ],
+    "anchor": [
+     47,
+     138
+    ]
+   },
+   "gen_dash": {
+    "frames": 6,
+    "cols": 6,
+    "cell": [
+     204,
+     124
+    ],
+    "anchor": [
+     120,
+     121
+    ]
+   },
+   "gen_jump": {
+    "frames": 3,
+    "cols": 3,
+    "cell": [
+     146,
+     138
+    ],
+    "anchor": [
+     68,
+     135
+    ]
+   },
+   "gen_fall": {
+    "frames": 2,
+    "cols": 2,
+    "cell": [
+     139,
+     131
+    ],
+    "anchor": [
+     66,
+     128
+    ]
+   },
+   "gen_hurt": {
+    "frames": 4,
+    "cols": 4,
+    "cell": [
+     105,
+     126
+    ],
+    "anchor": [
+     59,
+     123
+    ]
+   },
+   "gen_die": {
+    "frames": 16,
+    "cols": 16,
+    "cell": [
+     188,
+     170
+    ],
+    "anchor": [
+     145,
+     123
+    ]
    }
   }
  },
@@ -44,6 +128,42 @@
    "die": {
     "frames": 25,
     "cols": 25
+   },
+   "gen_jump": {
+    "frames": 3,
+    "cols": 3,
+    "cell": [
+     149,
+     145
+    ],
+    "anchor": [
+     97,
+     142
+    ]
+   },
+   "gen_fall": {
+    "frames": 2,
+    "cols": 2,
+    "cell": [
+     140,
+     137
+    ],
+    "anchor": [
+     94,
+     134
+    ]
+   },
+   "gen_hurt": {
+    "frames": 4,
+    "cols": 4,
+    "cell": [
+     151,
+     128
+    ],
+    "anchor": [
+     94,
+     126
+    ]
    }
   }
  },
@@ -64,6 +184,66 @@
    "attack": {
     "frames": 12,
     "cols": 12
+   },
+   "gen_walk": {
+    "frames": 16,
+    "cols": 16,
+    "cell": [
+     74,
+     132
+    ],
+    "anchor": [
+     35,
+     130
+    ]
+   },
+   "gen_jump": {
+    "frames": 3,
+    "cols": 3,
+    "cell": [
+     67,
+     137
+    ],
+    "anchor": [
+     37,
+     135
+    ]
+   },
+   "gen_fall": {
+    "frames": 2,
+    "cols": 2,
+    "cell": [
+     65,
+     130
+    ],
+    "anchor": [
+     28,
+     128
+    ]
+   },
+   "gen_hurt": {
+    "frames": 4,
+    "cols": 4,
+    "cell": [
+     72,
+     127
+    ],
+    "anchor": [
+     42,
+     125
+    ]
+   },
+   "gen_die": {
+    "frames": 16,
+    "cols": 16,
+    "cell": [
+     174,
+     155
+    ],
+    "anchor": [
+     147,
+     125
+    ]
    }
   }
  },
@@ -88,6 +268,42 @@
    "jump": {
     "frames": 17,
     "cols": 17
+   },
+   "gen_idle": {
+    "frames": 12,
+    "cols": 12,
+    "cell": [
+     77,
+     105
+    ],
+    "anchor": [
+     42,
+     102
+    ]
+   },
+   "gen_hurt": {
+    "frames": 4,
+    "cols": 4,
+    "cell": [
+     87,
+     103
+    ],
+    "anchor": [
+     54,
+     100
+    ]
+   },
+   "gen_die": {
+    "frames": 14,
+    "cols": 14,
+    "cell": [
+     152,
+     141
+    ],
+    "anchor": [
+     122,
+     100
+    ]
    }
   }
  },
@@ -112,6 +328,30 @@
    "hurt": {
     "frames": 11,
     "cols": 11
+   },
+   "gen_idle": {
+    "frames": 12,
+    "cols": 12,
+    "cell": [
+     117,
+     124
+    ],
+    "anchor": [
+     46,
+     121
+    ]
+   },
+   "gen_die": {
+    "frames": 14,
+    "cols": 14,
+    "cell": [
+     193,
+     165
+    ],
+    "anchor": [
+     140,
+     120
+    ]
    }
   }
  },
@@ -132,6 +372,30 @@
    "attack": {
     "frames": 18,
     "cols": 18
+   },
+   "gen_hurt": {
+    "frames": 4,
+    "cols": 4,
+    "cell": [
+     86,
+     85
+    ],
+    "anchor": [
+     50,
+     83
+    ]
+   },
+   "gen_die": {
+    "frames": 14,
+    "cols": 14,
+    "cell": [
+     138,
+     117
+    ],
+    "anchor": [
+     105,
+     83
+    ]
    }
   }
  },
@@ -188,6 +452,30 @@
    "hurt": {
     "frames": 7,
     "cols": 7
+   },
+   "gen_walk": {
+    "frames": 16,
+    "cols": 16,
+    "cell": [
+     128,
+     161
+    ],
+    "anchor": [
+     56,
+     158
+    ]
+   },
+   "gen_die": {
+    "frames": 16,
+    "cols": 16,
+    "cell": [
+     232,
+     202
+    ],
+    "anchor": [
+     174,
+     152
+    ]
    }
   }
  },
@@ -212,6 +500,42 @@
    "attack": {
     "frames": 10,
     "cols": 10
+   },
+   "gen_idle": {
+    "frames": 14,
+    "cols": 14,
+    "cell": [
+     169,
+     194
+    ],
+    "anchor": [
+     93,
+     192
+    ]
+   },
+   "gen_hurt": {
+    "frames": 4,
+    "cols": 4,
+    "cell": [
+     186,
+     191
+    ],
+    "anchor": [
+     113,
+     189
+    ]
+   },
+   "gen_die": {
+    "frames": 16,
+    "cols": 16,
+    "cell": [
+     274,
+     281
+    ],
+    "anchor": [
+     211,
+     189
+    ]
    }
   }
  },
@@ -232,6 +556,42 @@
    "howl": {
     "frames": 20,
     "cols": 19
+   },
+   "gen_leap": {
+    "frames": 4,
+    "cols": 4,
+    "cell": [
+     447,
+     327
+    ],
+    "anchor": [
+     248,
+     297
+    ]
+   },
+   "gen_hurt": {
+    "frames": 4,
+    "cols": 4,
+    "cell": [
+     398,
+     258
+    ],
+    "anchor": [
+     223,
+     256
+    ]
+   },
+   "gen_die": {
+    "frames": 16,
+    "cols": 16,
+    "cell": [
+     431,
+     271
+    ],
+    "anchor": [
+     222,
+     256
+    ]
    }
   }
  }
