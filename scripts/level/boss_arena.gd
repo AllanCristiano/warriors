@@ -44,4 +44,4 @@ func _on_body(b: Node) -> void:
 	_triggered = true
 	var level := get_tree().current_scene
 	if level.has_method("start_boss"):
-		level.start_boss(boss, global_position.x, global_position.x + arena_width)
+		level.start_boss.call_deferred(boss, global_position.x, global_position.x + arena_width)
