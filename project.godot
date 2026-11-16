@@ -1,0 +1,32 @@
+; Engine configuration file.
+config_version=5
+
+[application]
+
+config/name="Guerreiros do Reino"
+config/description="Escolha seu guerreiro e liberte o reino dos monstros!"
+run/main_scene="res://scenes/title.tscn"
+config/features=PackedStringArray("4.7")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Game="*res://scripts/autoload/game.gd"
+Audio="*res://scripts/autoload/audio.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[layer_names]
+
+2d_physics/layer_1="mundo"
+2d_physics/layer_2="heroi"
+2d_physics/layer_3="inimigos"
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.08, 0.06, 0.06, 1)
