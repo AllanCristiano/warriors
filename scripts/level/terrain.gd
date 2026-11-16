@@ -27,6 +27,9 @@ const STYLES := {
 		one_way = v
 		_refresh()
 
+## Se falso, o heroi nao renasce aqui apos cair (fundo de fosso com espinhos).
+@export var safe := true
+
 var _shape: CollisionShape2D
 var _top: Texture2D
 var _fill: Texture2D

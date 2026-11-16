@@ -1,0 +1,572 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/level/level.gd" id="r1"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/bg_sky_night.png" id="r2"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/bg_dungeon_back.png" id="r3"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/bg_dungeon_mid.png" id="r4"]
+[ext_resource type="Script" path="res://scripts/level/terrain.gd" id="r5"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/pillar.png" id="r6"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/chain.png" id="r7"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/skulls.png" id="r8"]
+[ext_resource type="Script" path="res://scripts/level/torch.gd" id="r9"]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="r10"]
+[ext_resource type="Script" path="res://scripts/level/breakable.gd" id="r11"]
+[ext_resource type="Script" path="res://scripts/level/hazard.gd" id="r12"]
+[ext_resource type="Script" path="res://scripts/pickup.gd" id="r13"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/weapon_rack.png" id="r14"]
+[ext_resource type="Script" path="res://scripts/level/checkpoint.gd" id="r15"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/throne.png" id="r16"]
+[ext_resource type="Texture2D" path="res://assets/kingdom/banner_red.png" id="r17"]
+[ext_resource type="Material" path="res://shaders/sway.tres" id="r18"]
+[ext_resource type="Script" path="res://scripts/level/boss_arena.gd" id="r19"]
+[ext_resource type="Script" path="res://scripts/level/goal.gd" id="r20"]
+
+[node name="Level3" type="Node2D"]
+script = ExtResource("r1")
+level_name = "Masmorras do Trono"
+subtitle = "Cerbero guarda o trono roubado. Desca as masmorras e liberte o reino!"
+music = "music_dungeon"
+level_width = 9000.0
+kill_y = 900.0
+ambient = Color(0.38, 0.36, 0.5, 1)
+
+[node name="Sky" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="SkyTexture" type="TextureRect" parent="Sky"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("r2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="DungeonBack" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.25, 1)
+repeat_size = Vector2(1280, 0)
+repeat_times = 4
+
+[node name="Layer" type="Sprite2D" parent="DungeonBack"]
+texture = ExtResource("r3")
+centered = false
+position = Vector2(0, -40)
+
+[node name="DungeonMid" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.5, 1)
+repeat_size = Vector2(1280, 0)
+repeat_times = 4
+
+[node name="Layer" type="Sprite2D" parent="DungeonMid"]
+texture = ExtResource("r4")
+centered = false
+position = Vector2(0, 0)
+
+[node name="Decor" type="Node2D" parent="."]
+z_index = -1
+
+[node name="Terrain" type="Node2D" parent="."]
+
+[node name="Hazards" type="Node2D" parent="."]
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="Checkpoints" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Foreground" type="Node2D" parent="."]
+z_index = 10
+
+[node name="PlayerStart" type="Marker2D" parent="."]
+position = Vector2(160, 556)
+
+[node name="Ground1" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(-200, 560)
+size = Vector2(1500, 540)
+style = "masmorra"
+
+[node name="Pillar1" type="Sprite2D" parent="Decor"]
+position = Vector2(260, 566)
+texture = ExtResource("r6")
+offset = Vector2(0, -210.0)
+
+[node name="Pillar2" type="Sprite2D" parent="Decor"]
+position = Vector2(900, 566)
+texture = ExtResource("r6")
+offset = Vector2(0, -210.0)
+
+[node name="Chain1" type="Sprite2D" parent="Decor"]
+position = Vector2(560, 230)
+texture = ExtResource("r7")
+offset = Vector2(0, -110.0)
+
+[node name="Skulls1" type="Sprite2D" parent="Decor"]
+position = Vector2(700, 566)
+texture = ExtResource("r8")
+offset = Vector2(0, -30.0)
+
+[node name="Torch1" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(420, 400)
+light_energy = 1.0
+light_scale = 2.2
+
+[node name="Torch2" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(1100, 400)
+light_energy = 1.0
+light_scale = 2.2
+
+[node name="Enemy1" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(950, 560)
+kind = "goblin_guerreiro"
+patrol_range = 180.0
+start_facing_left = true
+
+[node name="Breakable1" type="StaticBody2D" parent="Items"]
+script = ExtResource("r11")
+position = Vector2(1200, 560)
+kind = "barrel"
+loot = "aleatorio"
+
+[node name="Hazard1" type="Area2D" parent="Hazards"]
+script = ExtResource("r12")
+position = Vector2(1300, 620)
+kind = "lava"
+width = 700.0
+depth = 200.0
+
+[node name="Platform1" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(1360, 500)
+size = Vector2(110, 24)
+style = "pedra"
+one_way = true
+
+[node name="Platform2" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(1540, 420)
+size = Vector2(110, 24)
+style = "pedra"
+one_way = true
+
+[node name="Platform3" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(1720, 480)
+size = Vector2(110, 24)
+style = "pedra"
+one_way = true
+
+[node name="Platform4" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(1880, 410)
+size = Vector2(100, 24)
+style = "pedra"
+one_way = true
+
+[node name="Coin1" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(1360.0, 340.0)
+kind = "coin"
+
+[node name="Coin2" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(1448.57, 310.61)
+kind = "coin"
+
+[node name="Coin3" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(1537.14, 291.02)
+kind = "coin"
+
+[node name="Coin4" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(1625.71, 281.22)
+kind = "coin"
+
+[node name="Coin5" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(1714.29, 281.22)
+kind = "coin"
+
+[node name="Coin6" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(1802.86, 291.02)
+kind = "coin"
+
+[node name="Coin7" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(1891.43, 310.61)
+kind = "coin"
+
+[node name="Coin8" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(1980.0, 340.0)
+kind = "coin"
+
+[node name="Ground2" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(2000, 560)
+size = Vector2(1300, 540)
+style = "masmorra"
+
+[node name="Pillar3" type="Sprite2D" parent="Decor"]
+position = Vector2(2200, 566)
+texture = ExtResource("r6")
+offset = Vector2(0, -210.0)
+
+[node name="Pillar4" type="Sprite2D" parent="Decor"]
+position = Vector2(2900, 566)
+texture = ExtResource("r6")
+offset = Vector2(0, -210.0)
+
+[node name="WeaponRack1" type="Sprite2D" parent="Decor"]
+position = Vector2(2500, 566)
+texture = ExtResource("r14")
+offset = Vector2(0, -85.0)
+
+[node name="Torch3" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(2350, 400)
+light_energy = 1.0
+light_scale = 2.2
+
+[node name="Torch4" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(3050, 400)
+light_energy = 1.0
+light_scale = 2.2
+
+[node name="Enemy2" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(2450, 560)
+kind = "goblin_mago"
+patrol_range = 150.0
+start_facing_left = true
+
+[node name="Enemy3" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(2750, 560)
+kind = "goblin_lanca"
+patrol_range = 150.0
+start_facing_left = true
+
+[node name="Enemy4" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(3100, 560)
+kind = "goblin_guerreiro"
+patrol_range = 150.0
+start_facing_left = true
+
+[node name="Platform5" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(2550, 390)
+size = Vector2(180, 24)
+style = "pedra"
+one_way = true
+
+[node name="Breakable2" type="StaticBody2D" parent="Items"]
+script = ExtResource("r11")
+position = Vector2(2620, 390)
+kind = "crate"
+loot = "pocao"
+
+[node name="Checkpoint1" type="Area2D" parent="Checkpoints"]
+script = ExtResource("r15")
+position = Vector2(3230, 560)
+
+[node name="Ground3" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(3300, 560)
+size = Vector2(200, 540)
+style = "masmorra"
+
+[node name="Hazard2" type="Area2D" parent="Hazards"]
+script = ExtResource("r12")
+position = Vector2(3500, 630)
+kind = "espinhos"
+width = 640.0
+depth = 200.0
+
+[node name="Ground4" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(3500, 660)
+size = Vector2(640, 600)
+style = "masmorra"
+safe = false
+
+[node name="Platform6" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(3560, 490)
+size = Vector2(100, 24)
+style = "pedra"
+one_way = true
+
+[node name="Platform7" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(3740, 420)
+size = Vector2(100, 24)
+style = "pedra"
+one_way = true
+
+[node name="Platform8" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(3920, 490)
+size = Vector2(100, 24)
+style = "pedra"
+one_way = true
+
+[node name="Enemy5" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(3790, 420)
+kind = "goblin_boleadeira"
+patrol_range = 0.0
+start_facing_left = true
+
+[node name="Coin9" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(3580, 450)
+kind = "coin"
+
+[node name="Coin10" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(3624, 450)
+kind = "coin"
+
+[node name="Coin11" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(3940, 450)
+kind = "coin"
+
+[node name="Coin12" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(3984, 450)
+kind = "coin"
+
+[node name="Ground5" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(4140, 560)
+size = Vector2(1260, 540)
+style = "masmorra"
+
+[node name="Chain2" type="Sprite2D" parent="Decor"]
+position = Vector2(4300, 230)
+texture = ExtResource("r7")
+offset = Vector2(0, -110.0)
+
+[node name="Chain3" type="Sprite2D" parent="Decor"]
+position = Vector2(4900, 230)
+texture = ExtResource("r7")
+offset = Vector2(0, -110.0)
+
+[node name="Skulls2" type="Sprite2D" parent="Decor"]
+position = Vector2(4600, 566)
+texture = ExtResource("r8")
+offset = Vector2(0, -30.0)
+
+[node name="Torch5" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(4450, 400)
+light_energy = 1.0
+light_scale = 2.2
+
+[node name="Torch6" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(5150, 400)
+light_energy = 1.0
+light_scale = 2.2
+
+[node name="Enemy6" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(4700, 560)
+kind = "goblin_mago"
+patrol_range = 120.0
+start_facing_left = true
+
+[node name="Enemy7" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(5000, 560)
+kind = "goblin_guerreiro"
+patrol_range = 150.0
+start_facing_left = true
+
+[node name="Enemy8" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(5300, 560)
+kind = "goblin_lanca"
+patrol_range = 100.0
+start_facing_left = true
+
+[node name="Breakable3" type="StaticBody2D" parent="Items"]
+script = ExtResource("r11")
+position = Vector2(4500, 560)
+kind = "crate"
+loot = "aleatorio"
+
+[node name="Breakable4" type="StaticBody2D" parent="Items"]
+script = ExtResource("r11")
+position = Vector2(4560, 560)
+kind = "barrel"
+loot = "aleatorio"
+
+[node name="Hazard3" type="Area2D" parent="Hazards"]
+script = ExtResource("r12")
+position = Vector2(5400, 620)
+kind = "lava"
+width = 400.0
+depth = 200.0
+
+[node name="Platform9" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(5470, 470)
+size = Vector2(120, 24)
+style = "pedra"
+one_way = true
+
+[node name="Platform10" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(5650, 390)
+size = Vector2(120, 24)
+style = "pedra"
+one_way = true
+
+[node name="Ground6" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(5800, 440)
+size = Vector2(1100, 660)
+style = "masmorra"
+
+[node name="Pillar5" type="Sprite2D" parent="Decor"]
+position = Vector2(6000, 446)
+texture = ExtResource("r6")
+offset = Vector2(0, -210.0)
+
+[node name="Pillar6" type="Sprite2D" parent="Decor"]
+position = Vector2(6700, 446)
+texture = ExtResource("r6")
+offset = Vector2(0, -210.0)
+
+[node name="Torch7" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(6200, 280)
+light_energy = 1.0
+light_scale = 2.2
+
+[node name="Torch8" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(6500, 280)
+light_energy = 1.0
+light_scale = 2.2
+
+[node name="Enemy9" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(6300, 440)
+kind = "goblin_mago"
+patrol_range = 120.0
+start_facing_left = true
+
+[node name="Enemy10" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(6600, 440)
+kind = "goblin_guerreiro"
+patrol_range = 120.0
+start_facing_left = true
+
+[node name="Potion1" type="Area2D" parent="Items"]
+script = ExtResource("r13")
+position = Vector2(6450, 390)
+kind = "potion"
+
+[node name="Checkpoint2" type="Area2D" parent="Checkpoints"]
+script = ExtResource("r15")
+position = Vector2(6850, 440)
+
+[node name="Ground7" type="StaticBody2D" parent="Terrain"]
+script = ExtResource("r5")
+position = Vector2(6900, 560)
+size = Vector2(2100, 540)
+style = "masmorra"
+
+[node name="Throne1" type="Sprite2D" parent="Decor"]
+position = Vector2(8000, 566)
+texture = ExtResource("r16")
+offset = Vector2(0, -150.0)
+
+[node name="BannerRed1" type="Sprite2D" parent="Decor"]
+position = Vector2(7750, 230)
+texture = ExtResource("r17")
+offset = Vector2(0, -100.0)
+material = ExtResource("r18")
+
+[node name="BannerRed2" type="Sprite2D" parent="Decor"]
+position = Vector2(8250, 230)
+texture = ExtResource("r17")
+offset = Vector2(0, -100.0)
+material = ExtResource("r18")
+
+[node name="Pillar7" type="Sprite2D" parent="Decor"]
+position = Vector2(7300, 566)
+texture = ExtResource("r6")
+offset = Vector2(0, -210.0)
+
+[node name="Pillar8" type="Sprite2D" parent="Decor"]
+position = Vector2(8700, 566)
+texture = ExtResource("r6")
+offset = Vector2(0, -210.0)
+
+[node name="Skulls3" type="Sprite2D" parent="Decor"]
+position = Vector2(7500, 566)
+texture = ExtResource("r8")
+offset = Vector2(0, -30.0)
+
+[node name="Skulls4" type="Sprite2D" parent="Decor"]
+position = Vector2(8500, 566)
+texture = ExtResource("r8")
+offset = Vector2(0, -30.0)
+
+[node name="Torch9" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(7150, 390)
+light_energy = 1.3
+light_scale = 2.8
+
+[node name="Torch10" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(7650, 360)
+light_energy = 1.3
+light_scale = 2.8
+
+[node name="Torch11" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(8350, 360)
+light_energy = 1.3
+light_scale = 2.8
+
+[node name="Torch12" type="Node2D" parent="Decor"]
+script = ExtResource("r9")
+position = Vector2(8850, 390)
+light_energy = 1.3
+light_scale = 2.8
+
+[node name="Boss" type="CharacterBody2D" parent="Enemies"]
+script = ExtResource("r10")
+position = Vector2(8300, 560)
+kind = "cerberus"
+patrol_range = 180.0
+start_facing_left = true
+dormant = true
+
+[node name="BossArena" type="Area2D" parent="."]
+script = ExtResource("r19")
+position = Vector2(6950, 560)
+boss_path = NodePath("../Enemies/Boss")
+arena_width = 1700.0
+
+[node name="Goal" type="Area2D" parent="."]
+script = ExtResource("r20")
+position = Vector2(8880, 564)
+texture_name = "castle_gate"

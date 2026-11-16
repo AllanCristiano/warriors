@@ -65,12 +65,15 @@ func _physics_process(_delta: float) -> void:
 		return
 	for b in get_overlapping_bodies():
 		if b is Hero and b.state != "dead":
-			if kind == "espinhos":
-				if b.take_damage(20, b.global_position + Vector2(0, 50)):
-					b.velocity.y = -700
-			else:
-				Audio.play("fire" if kind == "lava" else "break", -4)
-				b.fall_in_pit()
+			Audio.play({"espinhos": "clang", "lava": "fire", "agua": "break"}[kind], -4)
+			if level_fx():
+				FX.spawn(get_parent(), "spark" if kind == "espinhos" else "dust", b.global_position, 1,
+					Color(1, 0.6, 0.2) if kind == "lava" else Color(0.7, 0.85, 1.0))
+			b.fall_in_pit()
+
+
+func level_fx() -> bool:
+	return get_parent() != null
 
 
 func _draw() -> void:

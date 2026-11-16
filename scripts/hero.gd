@@ -30,6 +30,7 @@ var camera: Camera2D
 var _base_offset := Vector2.ZERO
 var _bob := 0.0
 var level: Node = null
+var last_safe := Vector2.INF
 
 
 func setup(hero_id: String) -> void:
@@ -143,6 +144,10 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	_update_anim(dir, delta)
+	if is_on_floor() and state != "dead":
+		var col := get_last_slide_collision()
+		if col and col.get_collider() is Terrain and col.get_collider().safe:
+			last_safe = global_position
 
 	if level and global_position.y > level.kill_y and state != "dead":
 		fall_in_pit()
@@ -386,7 +391,7 @@ func fall_in_pit() -> void:
 		_die()
 		return
 	velocity = Vector2.ZERO
-	global_position = level.respawn_point()
+	global_position = last_safe if last_safe != Vector2.INF else level.respawn_point()
 	camera.reset_smoothing()
 	invuln = 1.5
 

@@ -145,7 +145,7 @@ func _physics_process(delta: float) -> void:
 
 	var to_hero := hero.global_position - global_position
 	var dist := absf(to_hero.x)
-	var sees := dist < cfg["sight"] and absf(to_hero.y) < 260
+	var sees: bool = dist < cfg["sight"] and absf(to_hero.y) < 260
 
 	match cfg["ai"]:
 		"melee": _ai_melee(delta, hero, to_hero, dist, sees)
