@@ -1199,3 +1199,17 @@ if __name__ == "__main__":
     dungeon_bg("bg_dungeon_back"); dungeon_mid("bg_dungeon_mid")
     hills_layer("bg_night_far", (18, 18, 34), (10, 10, 22), 420, 40, 2, 14, castle=(640, (10, 10, 20), 1.6), trees=40, tree_col=(14, 14, 28))
     title_bg()
+
+
+def fog():
+    W, H = 1280, 320
+    n = tnoise(W, H, 10, 3, 5, 99)
+    ramp = np.sin(np.linspace(0, np.pi, H))[:, None] ** 1.5
+    a = (np.clip((n - 0.35) * 2.2, 0, 1) * ramp * 150).astype(np.uint8)
+    img = np.zeros((H, W, 4), np.uint8); img[:, :, :3] = (170, 160, 175); img[:, :, 3] = a
+    Image.fromarray(img).save(os.path.join(OUT, "fog.png"))
+    print("ok fog")
+
+
+if __name__ == "__main__":
+    fog()

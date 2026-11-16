@@ -9,6 +9,8 @@ extends Node2D
 @export var top_limit := -500.0
 @export var kill_y := 900.0
 @export var ambient := Color(1, 1, 1)
+## Clima: "brasas", "chuva", "poeira" ou vazio.
+@export var weather := ""
 
 var hero: Hero
 var hud: HUD
@@ -40,6 +42,15 @@ func _ready() -> void:
 	add_child(hero)
 	hero.set_camera_limits(0, level_width, top_limit, 720)
 	hero.died.connect(_on_hero_died)
+	# luz suave em volta do heroi para nao sumir no escuro
+	var hl := PointLight2D.new()
+	hl.texture = Torch.light_texture()
+	hl.texture_scale = 2.6
+	hl.energy = 0.55
+	hl.color = Color(1, 0.85, 0.7)
+	hl.position = Vector2(0, -60)
+	hero.add_child(hl)
+	add_child(Atmosphere.new(weather))
 	hud = HUD.new()
 	add_child(hud)
 	hud.bind_hero(hero)
