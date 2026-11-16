@@ -24,7 +24,7 @@
 [node name="Level3" type="Node2D"]
 script = ExtResource("r1")
 level_name = "Masmorras do Trono"
-subtitle = "Cerbero guarda o trono roubado. Desca as masmorras e liberte o reino!"
+subtitle = "Cérbero guarda o trono roubado. Desça às masmorras e liberte o reino!"
 music = "music_dungeon"
 level_width = 9000.0
 kill_y = 900.0
@@ -47,6 +47,7 @@ stretch_mode = 6
 scroll_scale = Vector2(0.25, 1)
 repeat_size = Vector2(1280, 0)
 repeat_times = 4
+z_index = -18
 
 [node name="Layer" type="Sprite2D" parent="DungeonBack"]
 texture = ExtResource("r3")
@@ -57,6 +58,7 @@ position = Vector2(0, -40)
 scroll_scale = Vector2(0.5, 1)
 repeat_size = Vector2(1280, 0)
 repeat_times = 4
+z_index = -15
 
 [node name="Layer" type="Sprite2D" parent="DungeonMid"]
 texture = ExtResource("r4")
@@ -496,18 +498,6 @@ position = Vector2(8000, 566)
 texture = ExtResource("r16")
 offset = Vector2(0, -150.0)
 
-[node name="BannerRed1" type="Sprite2D" parent="Decor"]
-position = Vector2(7750, 230)
-texture = ExtResource("r17")
-offset = Vector2(0, -100.0)
-material = ExtResource("r18")
-
-[node name="BannerRed2" type="Sprite2D" parent="Decor"]
-position = Vector2(8250, 230)
-texture = ExtResource("r17")
-offset = Vector2(0, -100.0)
-material = ExtResource("r18")
-
 [node name="Pillar7" type="Sprite2D" parent="Decor"]
 position = Vector2(7300, 566)
 texture = ExtResource("r6")
@@ -517,6 +507,18 @@ offset = Vector2(0, -210.0)
 position = Vector2(8700, 566)
 texture = ExtResource("r6")
 offset = Vector2(0, -210.0)
+
+[node name="BannerRed1" type="Sprite2D" parent="Decor"]
+position = Vector2(7300, 410)
+texture = ExtResource("r17")
+offset = Vector2(0, -100.0)
+material = ExtResource("r18")
+
+[node name="BannerRed2" type="Sprite2D" parent="Decor"]
+position = Vector2(8700, 410)
+texture = ExtResource("r17")
+offset = Vector2(0, -100.0)
+material = ExtResource("r18")
 
 [node name="Skulls3" type="Sprite2D" parent="Decor"]
 position = Vector2(7500, 566)

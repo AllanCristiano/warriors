@@ -22,6 +22,16 @@ func _ready() -> void:
 		var cm := CanvasModulate.new()
 		cm.color = ambient
 		add_child(cm)
+	# paredes invisiveis nas bordas da fase
+	for x in [-20.0, level_width + 20.0]:
+		var w := StaticBody2D.new()
+		var cs := CollisionShape2D.new()
+		var rs := RectangleShape2D.new()
+		rs.size = Vector2(40, 4000)
+		cs.shape = rs
+		w.add_child(cs)
+		w.position = Vector2(x, -1000)
+		add_child(w)
 	hero = Hero.new()
 	hero.setup(Game.hero_id)
 	hero.level = self
@@ -83,11 +93,11 @@ func complete() -> void:
 	hero.freeze(true)
 	Audio.music("")
 	Audio.play("victory")
-	hud.message("Fase concluida!  +%d de ouro" % Game.gold, 3.0)
+	hud.message("Fase concluída!  Ouro: %d" % Game.gold, 3.0)
 	Game.hero_hp = hero.hp
 	get_tree().create_timer(3.0).timeout.connect(Game.next_level)
 
 
 func _on_hero_died() -> void:
-	hud.message("Voce caiu em batalha...", 2.5)
+	hud.message("Você caiu em batalha...", 2.5)
 	get_tree().create_timer(2.8).timeout.connect(Game.lose_life)

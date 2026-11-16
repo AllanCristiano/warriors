@@ -6,30 +6,30 @@ const HEROES := {
 		"name": "Sir Aldric",
 		"title": "O Cavaleiro de Ferro",
 		"sprite": "cavaleiro",
-		"desc": "Guardiao juramentado da Coroa. Armadura pesada e espada longa.\nEspecial: Investida Real - avanca atravessando inimigos.",
+		"desc": "Guardião juramentado da Coroa. Armadura pesada e espada longa. Especial: Investida Real — avança atravessando inimigos.",
 		"hp": 150, "speed": 280.0, "jump": 800.0, "damage": 26,
 		"attack_cd": 0.36, "special_cd": 2.2, "reach": Vector2(120, 110),
-		"stats": {"Vida": 4, "Forca": 3, "Agilidade": 3},
+		"stats": {"Vida": 4, "Força": 3, "Agilidade": 3},
 		"color": Color(0.75, 0.78, 0.85),
 	},
 	"barbaro": {
 		"name": "Brakka",
-		"title": "O Barbaro das Montanhas",
+		"title": "O Bárbaro das Montanhas",
 		"sprite": "barbaro",
-		"desc": "Fera das terras geladas. Lento, mas cada golpe da sua clava\nesmaga goblins. Especial: Terremoto - esmaga o chao ao redor.",
+		"desc": "Fera das terras geladas. Lento, mas cada golpe da sua clava esmaga goblins. Especial: Terremoto — esmaga o chão ao redor.",
 		"hp": 200, "speed": 240.0, "jump": 760.0, "damage": 40,
 		"attack_cd": 0.15, "special_cd": 3.5, "reach": Vector2(150, 120),
-		"stats": {"Vida": 5, "Forca": 5, "Agilidade": 2},
+		"stats": {"Vida": 5, "Força": 5, "Agilidade": 2},
 		"color": Color(0.85, 0.6, 0.35),
 	},
 	"sabio": {
 		"name": "Mestre Liang",
-		"title": "O Sabio Marcial",
+		"title": "O Sábio Marcial",
 		"sprite": "sabio",
-		"desc": "Andarilho do Oriente que serve ao Rei. Ataca a distancia com\ndardos e salta duas vezes. Especial: Leque de Dardos.",
+		"desc": "Andarilho do Oriente que serve ao Rei. Ataca à distância com dardos e salta duas vezes. Especial: Leque de Dardos.",
 		"hp": 110, "speed": 310.0, "jump": 780.0, "damage": 18,
 		"attack_cd": 0.1, "special_cd": 2.0, "reach": Vector2(0, 0),
-		"stats": {"Vida": 2, "Forca": 3, "Agilidade": 5},
+		"stats": {"Vida": 2, "Força": 3, "Agilidade": 5},
 		"color": Color(0.85, 0.75, 0.4),
 	},
 }
@@ -123,6 +123,7 @@ func _setup_fonts() -> void:
 	theme.default_font = font_body
 	theme.default_font_size = 20
 	get_tree().root.theme = theme
+	ThemeDB.fallback_font = font_body
 
 
 func _add_action(action: String, keys: Array, joy_buttons: Array = []) -> void:

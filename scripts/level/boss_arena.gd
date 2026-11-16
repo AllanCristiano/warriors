@@ -20,9 +20,9 @@ func _ready() -> void:
 	collision_mask = 2
 	var cs := CollisionShape2D.new()
 	var rs := RectangleShape2D.new()
-	rs.size = Vector2(40, 2000)
+	rs.size = Vector2(arena_width - trigger_offset, 2000)
 	cs.shape = rs
-	cs.position = Vector2(trigger_offset, -900)
+	cs.position = Vector2(trigger_offset + rs.size.x / 2, -900)
 	add_child(cs)
 	body_entered.connect(_on_body)
 

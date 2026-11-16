@@ -54,6 +54,7 @@ stretch_mode = 6
 scroll_scale = Vector2(0.15, 1)
 repeat_size = Vector2(1280, 0)
 repeat_times = 4
+z_index = -19
 
 [node name="Layer" type="Sprite2D" parent="FarHills"]
 texture = ExtResource("r3")
@@ -64,6 +65,7 @@ position = Vector2(0, 0)
 scroll_scale = Vector2(0.3, 1)
 repeat_size = Vector2(1280, 0)
 repeat_times = 4
+z_index = -17
 
 [node name="Layer" type="Sprite2D" parent="NearHills"]
 texture = ExtResource("r4")
@@ -74,6 +76,7 @@ position = Vector2(0, 40)
 scroll_scale = Vector2(0.5, 1)
 repeat_size = Vector2(1280, 0)
 repeat_times = 4
+z_index = -15
 
 [node name="Layer" type="Sprite2D" parent="Village"]
 texture = ExtResource("r5")
@@ -254,7 +257,7 @@ texture = ExtResource("r18")
 offset = Vector2(0, -170.0)
 
 [node name="BannerRed1" type="Sprite2D" parent="Decor"]
-position = Vector2(2180, 320)
+position = Vector2(2180, 450)
 texture = ExtResource("r19")
 offset = Vector2(0, -100.0)
 material = ExtResource("r20")
@@ -494,7 +497,7 @@ texture = ExtResource("r18")
 offset = Vector2(0, -170.0)
 
 [node name="BannerBlue1" type="Sprite2D" parent="Decor"]
-position = Vector2(5470, 330)
+position = Vector2(5560, 450)
 texture = ExtResource("r26")
 offset = Vector2(0, -100.0)
 material = ExtResource("r20")
@@ -569,22 +572,23 @@ position = Vector2(7000, 566)
 texture = ExtResource("r21")
 offset = Vector2(0, -100.0)
 
-[node name="BannerRed2" type="Sprite2D" parent="Decor"]
-position = Vector2(6700, 310)
-texture = ExtResource("r19")
-offset = Vector2(0, -100.0)
-material = ExtResource("r20")
-
-[node name="BannerRed3" type="Sprite2D" parent="Decor"]
-position = Vector2(7500, 310)
-texture = ExtResource("r19")
-offset = Vector2(0, -100.0)
-material = ExtResource("r20")
-
 [node name="HouseB3" type="Sprite2D" parent="Decor"]
 position = Vector2(7250, 566)
 texture = ExtResource("r18")
 offset = Vector2(0, -170.0)
+modulate = Color(0.85, 0.85, 0.9, 1)
+
+[node name="BannerRed2" type="Sprite2D" parent="Decor"]
+position = Vector2(7180, 450)
+texture = ExtResource("r19")
+offset = Vector2(0, -100.0)
+material = ExtResource("r20")
+
+[node name="HouseA3" type="Sprite2D" parent="Decor"]
+position = Vector2(6750, 566)
+texture = ExtResource("r9")
+offset = Vector2(0, -145.0)
+flip_h = true
 modulate = Color(0.85, 0.85, 0.9, 1)
 
 [node name="MarketStall3" type="Sprite2D" parent="Decor"]

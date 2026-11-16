@@ -21,8 +21,9 @@ func _ready() -> void:
 	collision_mask = 2
 	body_entered.connect(_on_body)
 	_arrow = Label.new()
-	_arrow.text = "SAIDA  >>"
+	_arrow.text = "SAÍDA  >>"
 	_arrow.add_theme_font_size_override("font_size", 30)
+	_arrow.add_theme_font_override("font", Game.font_title)
 	_arrow.add_theme_color_override("font_color", Color(1, 0.85, 0.3))
 	_arrow.add_theme_color_override("font_outline_color", Color(0.15, 0.08, 0.02))
 	_arrow.add_theme_constant_override("outline_size", 8)

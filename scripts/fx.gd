@@ -27,6 +27,7 @@ static func text(parent: Node, pos: Vector2, msg: String, c := Color(1, 0.95, 0.
 	var l := Label.new()
 	l.text = msg
 	l.add_theme_font_size_override("font_size", font_size)
+	l.add_theme_font_override("font", Game.font_body)
 	l.add_theme_color_override("font_color", c)
 	l.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.02))
 	l.add_theme_constant_override("outline_size", 6)

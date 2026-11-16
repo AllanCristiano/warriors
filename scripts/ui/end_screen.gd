@@ -27,7 +27,7 @@ func _ready() -> void:
 	if not victory:
 		s.modulate = Color(0.5, 0.45, 0.5)
 		s.rotation = -PI / 2
-	var place_hero := func(): s.position = Vector2(size.x / 2, size.y - 80 if victory else size.y - 40)
+	var place_hero := func(): s.position = Vector2(size.x * 0.18, size.y - 60 if victory else size.y - 40)
 	place_hero.call()
 	resized.connect(place_hero)
 
@@ -45,8 +45,8 @@ func _ready() -> void:
 		crest.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		crest.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		vb.add_child(crest)
-		vb.add_child(Menu.title_label("O Reino esta salvo!", 76))
-		var l := Menu.title_label("%s derrotou Cerbero e as hordas goblins.\nO Rei ergue sua taca em sua honra!\nOuro coletado: %d" % [d["name"], Game.gold], 24, Color(1, 0.97, 0.88))
+		vb.add_child(Menu.title_label("O Reino está salvo!", 76))
+		var l := Menu.title_label("%s derrotou Cérbero e as hordas goblins.\nO Rei ergue sua taça em sua honra!\nOuro coletado: %d" % [d["name"], Game.gold], 24, Color(1, 0.97, 0.88))
 		l.add_theme_font_override("font", Game.font_body)
 		vb.add_child(l)
 	else:

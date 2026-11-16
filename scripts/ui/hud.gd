@@ -71,6 +71,7 @@ func _ready() -> void:
 	var root := Control.new()
 	root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.theme = get_tree().root.theme
 	add_child(root)
 
 	# painel do heroi
@@ -124,7 +125,7 @@ func _ready() -> void:
 
 	# controles
 	var help := style_label(Label.new(), 15, Color(1, 0.95, 0.8, 0.85), null, 5, Color(0.1, 0.05, 0.02))
-	help.text = "A/D mover   ESPACO pular   J atacar   L especial   ESC pausa"
+	help.text = "A/D mover   ESPAÇO pular   J atacar   L especial   ESC pausa"
 	help.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
 	place(help, Vector2(-560, -34))
 	root.add_child(help)

@@ -15,13 +15,13 @@ const TYPES := {
 		"reach": Vector2(150, 80), "hit_frame": 4, "attack_cd": 1.6, "sight": 520.0, "size": Vector2(50, 100), "gold": 2, "block": 0.35},
 	"goblin_boleadeira": {"name": "Goblin Boleadeiro", "hp": 35, "speed": 0.0, "damage": 12, "ai": "thrower",
 		"hit_frame": 4, "attack_cd": 2.4, "sight": 720.0, "size": Vector2(44, 76), "gold": 2},
-	"goblin_mago": {"name": "Goblin Xama", "hp": 50, "speed": 80.0, "damage": 14, "ai": "caster",
+	"goblin_mago": {"name": "Goblin Xamã", "hp": 50, "speed": 80.0, "damage": 14, "ai": "caster",
 		"hit_frame": 7, "attack_cd": 2.6, "sight": 760.0, "size": Vector2(46, 100), "gold": 3},
 	"goblin_general": {"name": "Grukk, o General Goblin", "hp": 420, "speed": 170.0, "damage": 20, "ai": "general",
 		"reach": Vector2(160, 140), "hit_frame": 6, "attack_cd": 1.0, "sight": 1000.0, "size": Vector2(70, 150), "gold": 15, "boss": true},
 	"minotauro": {"name": "Tauron, o Minotauro", "hp": 650, "speed": 120.0, "damage": 24, "ai": "minotaur",
 		"reach": Vector2(170, 170), "hit_frame": 7, "attack_cd": 1.2, "sight": 1100.0, "size": Vector2(90, 180), "gold": 25, "boss": true},
-	"cerberus": {"name": "Cerbero, Guardiao do Abismo", "hp": 950, "speed": 0.0, "damage": 26, "ai": "cerberus",
+	"cerberus": {"name": "Cérbero, Guardião do Abismo", "hp": 950, "speed": 0.0, "damage": 26, "ai": "cerberus",
 		"hit_frame": 8, "attack_cd": 1.6, "sight": 1300.0, "size": Vector2(250, 200), "gold": 40, "boss": true},
 }
 
@@ -313,7 +313,7 @@ func _ai_minotaur(delta: float, hero: Hero, to_hero: Vector2, dist: float) -> vo
 	if not _phase2 and hp < max_hp * 0.5:
 		_phase2 = true
 		sprite.speed_scale = 1.25
-		FX.text(get_parent(), global_position + Vector2(0, -220), "FURIA!", Color(1, 0.3, 0.2), 38)
+		FX.text(get_parent(), global_position + Vector2(0, -220), "FÚRIA!", Color(1, 0.3, 0.2), 38)
 	match state:
 		"patrol", "chase", "idle":
 			_face(to_hero.x)
@@ -529,7 +529,7 @@ func _die() -> void:
 	_pounce = false
 	remove_from_group("damageable")
 	remove_from_group("enemies")
-	collision_layer = 0
+	set_deferred("collision_layer", 0)
 	Audio.play("enemy_die")
 	if is_boss():
 		Audio.play("roar", 0, 0.0)

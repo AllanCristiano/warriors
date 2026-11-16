@@ -35,15 +35,15 @@ func _ready() -> void:
 	add_child(s)
 	var p := CPUParticles2D.new()
 	p.position = Vector2(0, -24)
-	p.amount = 26
+	p.amount = 40
 	p.lifetime = 0.5
 	p.direction = Vector2(0, -1)
 	p.spread = 14
 	p.initial_velocity_min = 40
 	p.initial_velocity_max = 80
 	p.gravity = Vector2(0, -60)
-	p.scale_amount_min = 5
-	p.scale_amount_max = 9
+	p.scale_amount_min = 9
+	p.scale_amount_max = 15
 	var curve := Curve.new()
 	curve.add_point(Vector2(0, 1))
 	curve.add_point(Vector2(1, 0.1))

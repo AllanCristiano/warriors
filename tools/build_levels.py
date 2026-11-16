@@ -90,7 +90,8 @@ class LevelBuilder:
 
     def parallax(self, name, tex, scroll, y=0, modulate=None):
         s = self.s
-        props = {"scroll_scale": v2(scroll, 1), "repeat_size": v2(1280, 0), "repeat_times": 4}
+        props = {"scroll_scale": v2(scroll, 1), "repeat_size": v2(1280, 0), "repeat_times": 4,
+                 "z_index": -20 + int(scroll * 10)}
         s.node(name, "Parallax2D", ".", props)
         sp = {"texture": s.res("Texture2D", "res://assets/kingdom/%s.png" % tex), "centered": "false",
               "position": v2(0, y)}
@@ -236,7 +237,7 @@ def level1():
     L.ground(1740, 3300)
     L.prop("market_stall", 1900)
     L.prop("house_b", 2250)
-    L.prop("banner_red", 2180, GY - 240, sink=0, sway=True)
+    L.prop("banner_red", 2180, GY - 110, sink=0, sway=True)
     L.prop("well", 2620)
     L.prop("cart", 3000)
     L.prop("tree_pine", 3200)
@@ -273,7 +274,7 @@ def level1():
     L.ground(4920, 6300)
     L.prop("house_a", 5150, flip=True)
     L.prop("house_b", 5650)
-    L.prop("banner_blue", 5470, GY - 230, sink=0, sway=True)
+    L.prop("banner_blue", 5560, GY - 110, sink=0, sway=True)
     L.prop("tree_pine", 5950)
     L.prop("market_stall", 6150)
     L.platform(5400, GY - 170, 200, "pedra")
@@ -287,9 +288,9 @@ def level1():
     # --- arena: praca da aldeia (chefe: General Goblin)
     L.ground(6300, 8700)
     L.prop("well", 7000)
-    L.prop("banner_red", 6700, GY - 250, sink=0, sway=True)
-    L.prop("banner_red", 7500, GY - 250, sink=0, sway=True)
     L.prop("house_b", 7250, mod=(0.85, 0.85, 0.9))
+    L.prop("banner_red", 7180, GY - 110, sink=0, sway=True)
+    L.prop("house_a", 6750, flip=True, mod=(0.85, 0.85, 0.9))
     L.prop("market_stall", 6600)
     L.prop("tree_oak", 7700)
     boss = L.enemy("goblin_general", 7400, name="Boss", dormant=True)
@@ -314,7 +315,7 @@ def level2():
     # --- ponte levadica sobre o fosso
     L.ground(-200, 900, style="castelo")
     L.prop("tower", 120)
-    L.prop("banner_red", 360, GY - 260, sink=0, sway=True)
+    L.prop("banner_red", 120, GY - 190, sink=0, sway=True)
     L.prop("knight_statue", 560)
     L.torch(300, GY - 140); L.torch(760, GY - 140)
     L.crate(700, kind="barrel")
@@ -337,7 +338,7 @@ def level2():
     L.crate(2700, GY - 360, loot="pocao")
     L.enemy("goblin_mago", 2500, patrol=180)
     L.enemy("goblin_guerreiro", 3000, patrol=150)
-    L.prop("banner_blue", 3050, GY - 250, sink=0, sway=True)
+    L.prop("banner_blue", 1950, GY - 190, sink=0, sway=True)
     L.checkpoint(3120)
 
     # --- caminho da muralha (terreno alto) com buracos
@@ -363,7 +364,8 @@ def level2():
     L.coin_arc(5720, 6070, GY - 200, 80, 6)
     L.ground(6080, 7400, GY, "castelo")
     L.prop("weapon_rack", 6200)
-    L.prop("banner_red", 6450, GY - 250, sink=0, sway=True)
+    L.prop("tower", 6300)
+    L.prop("banner_red", 6300, GY - 190, sink=0, sway=True)
     L.torch(6650, GY - 150)
     L.enemy("goblin_guerreiro", 6400, patrol=150)
     L.enemy("goblin_lanca", 6800, patrol=150)
@@ -377,7 +379,8 @@ def level2():
     L.prop("tower", 7600)
     L.prop("tower", 8800)
     L.prop("knight_statue", 8000); L.prop("knight_statue", 8400, flip=True)
-    L.prop("banner_red", 8200, GY - 300, sink=0, sway=True)
+    L.prop("banner_red", 7600, GY - 190, sink=0, sway=True)
+    L.prop("banner_red", 8800, GY - 190, sink=0, sway=True)
     L.torch(7800, GY - 160); L.torch(8600, GY - 160)
     boss = L.enemy("minotauro", 8500, name="Boss", dormant=True)
     L.arena(7500, 1500, boss)
@@ -389,7 +392,7 @@ def level2():
 # FASE 3 - Masmorras do Trono (escuro, tochas, lava, sala do trono)
 # =====================================================================
 def level3():
-    L = LevelBuilder("Level3", "Masmorras do Trono", "Cerbero guarda o trono roubado. Desca as masmorras e liberte o reino!",
+    L = LevelBuilder("Level3", "Masmorras do Trono", "Cérbero guarda o trono roubado. Desça às masmorras e liberte o reino!",
                      "music_dungeon", 9000, ambient=(0.38, 0.36, 0.5))
     L.sky("bg_sky_night")
     L.parallax("DungeonBack", "bg_dungeon_back", 0.25, -40)
@@ -457,9 +460,9 @@ def level3():
     # --- sala do trono (chefe final: Cerbero)
     L.ground(6900, 9000, GY, "masmorra")
     L.prop("throne", 8000, GY)
-    L.prop("banner_red", 7750, GY - 330, sink=0, sway=True)
-    L.prop("banner_red", 8250, GY - 330, sink=0, sway=True)
     L.prop("pillar", 7300); L.prop("pillar", 8700)
+    L.prop("banner_red", 7300, GY - 150, sink=0, sway=True)
+    L.prop("banner_red", 8700, GY - 150, sink=0, sway=True)
     L.prop("skulls", 7500); L.prop("skulls", 8500)
     L.torch(7150, GY - 170, 1.3, 2.8); L.torch(7650, GY - 200, 1.3, 2.8)
     L.torch(8350, GY - 200, 1.3, 2.8); L.torch(8850, GY - 170, 1.3, 2.8)
